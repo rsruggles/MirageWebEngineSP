@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<div class="ui-widget-header editorBar">
+  <span>
+    <strong>&nbsp;NPC Editor</strong>
+    <strong id="mapEditorX" class="fRight boxed" style="background-color: #ce8484;">X</strong>
+    <strong id="mapEditor-" class="fRight boxed" style="background-color: #1698bc;">_</strong>
+  </span>
+</div>
+<div id="npcEditorBody" style="width: auto;">
+  <form class="pad">
+    <select id="npcEditorSelect"></select>
+  </form>
+  <form class="pad">
+    <span id="npcID">ID: 1</span>
+    <br /><br />
+    <span>Name: </span><br />
+    <input id="npcName" class="p100" type="text" placeholder="Null" disabled>
+    <br /><br />
+    <span>Sprite: </span><br />
+    <input id="npcSprite" class="p100" type="number" placeholder="0" disabled>
+  </form>
+  <br />
+  <form>
+    <div class="p50 fLeft pad">
+      <button id="editNPC" class="EditorButton">Edit</button>
+    </div>
+    <div class="p50 fLeft pad">
+      <button class="EditorButton" disabled="true">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Editor MODE Vars
+  var npcEditMode = false;
+  
+  // Edit The NPC
+  document.getElementById("editNPC").addEventListener("click", function(event){
+    event.preventDefault();
+    // Enable Edit Mode or Save the NPC
+    if (npcEditMode == false) {
+      $('#npcName').removeAttr('disabled');
+      $('#npcSprite').removeAttr('disabled');
+      $('#editNPC').html("Save");
+      npcEditMode = true;
+    } else {
+      $('#npcName').attr({'disabled': 'disabled'});
+      $('#npcSprite').attr({'disabled': 'disabled'});
+      $('#editNPC').html("Edit");
+      Npc.name = document.getElementById("npcName").value;
+      Npc.sprite = document.getElementById("npcSprite").value;
+      Npcs[selectedNpc] = Npc;
+      console.log(Npcs[0]);
+      console.log(Npcs[5]);
+      generateNPCDropDown();
+      npcEditMode = false;    
+    }
+  });
+  
+  // Toggle Selected NPC
+  var selectedNpc = 0;
+  $('#npcEditorSelect').on('change', function() {
+    selectedNpc = Number(this.value);
+    let laymenNPC = selectedNpc + 1;
+    $('#npcID').html("ID: " + laymenNPC);
+  });
+  
+  // Make Draggable
+  $( function() {
+    $("#npcEditor").draggable({ handle: ".ui-widget-header", containment: "#gameScreen", scroll: false, snap: ".snapUI" });
+  } );     
+  
+  // Generate The Dropdown
+  function generateNPCDropDown() {
+    var npcEditorSelect = document.getElementById("npcEditorSelect");
+    var npcOptHTML = "";
+    for (var i = 0; i < Npcs.length; i++) {
+      var thisNpc = Npcs[i];
+      var npcName = thisNpc.name;
+      if (npcName === "" || npcName === null) {
+        npcName = "Empty NPC Slot";
+      }
+      npcOptHTML += '<option value="' + i + '">' + (i+1) + ' ' + npcName + '</option>';
+      //console.log(Npcs[i].sprite + i);
+    }
+    npcEditorSelect.innerHTML = npcOptHTML;
+  }
+  generateNPCDropDown();
+  
+  // Edit Selected
+</script>
