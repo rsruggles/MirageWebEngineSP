@@ -101,22 +101,20 @@
       var maxNpcs = 100;
       var Npcs = new Array();
       
-      var Npc = {
-        name: "",
-        sprite: 0
-      };
+      function Npc(name, sprite) {
+        this.name = name;
+        this.sprite = sprite;
+      }
       
       function setNpc(id, name, sprite) {
-        Npcs[id].name = name;
-        Npcs[id].sprite = sprite;
+        Npcs[id] = new Npc(name, sprite);
       }
       
       function loadNpcs() {
         let id = 0;
         for (id = 0; id < maxNpcs; id++) {
-          Npc.name = "";
-          Npc.sprite = 0;
-          Npcs[id] = Npc;
+          var npc = new Npc("", 0); // Populate the Nps array with empty Npcs
+          Npcs.push(npc);
         }
       }
       loadNpcs();
