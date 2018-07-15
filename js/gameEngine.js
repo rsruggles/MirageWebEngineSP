@@ -1,133 +1,156 @@
-      var playerSprite = 0;
-      var PlayerOffset = (scaled_size * 0.5); // This isn't actually used
-      const Player = function(x,y,isMoving,Dir,Speed,AnimDir,AnimStep){
-        this.x = x; this.y = y;
-        this.isMoving = isMoving;
-        this.Dir = Dir;
-        this.Speed = Speed;
-        this.AnimDir = AnimDir;
-        this.AnimStep = AnimStep;
-      };
-      
-      Player.prototype = {
-        moveX: function(x) {
-          if (player.Dir === "Right") {
-            let PlayerLoc = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y);
-            let PlayerLocTop = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y - (scaled_size * 0.5 - 6));
-            let PlayerLocBottom = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y + (scaled_size * 0.5 - 6));
-            // Check Map Boundaries
-            if ((this.x += (x)) >= ((max_map_X * scaled_size) - (scaled_size * 0.5))) {
-              this.x = (max_map_X * scaled_size) - (scaled_size * 0.5);
-              player.isMoving = false;
-            // Check Collision Boundaries
-            } else if (/*Map.Collisions[PlayerLoc].right == "True" || */
-                       Map.Collisions[PlayerLocTop].right == "True" ||
-                       Map.Collisions[PlayerLocBottom].right == "True") {
-              player.isMoving = false;
-              this.x -= (x);
-            } else {
-              this.x += (x);
-            }
-          } else if (player.Dir === "Left") {
-            let PlayerLoc = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y);
-            let PlayerLocTop = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y - (scaled_size * 0.5 - 6));
-            let PlayerLocBottom = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y + (scaled_size * 0.5 - 6));
-            if ((this.x -= (x)) <= (0 + (scaled_size * 0.5))) {
-              this.x = (0 + (scaled_size * 0.5));
-              player.isMoving = false;
-            } else if (/*Map.Collisions[PlayerLoc].left == "True" || */
-                       Map.Collisions[PlayerLocTop].left == "True" ||
-                       Map.Collisions[PlayerLocBottom].left == "True") {
-              player.isMoving = false;
-              this.x += (x);
-            } else {
-              this.x -= (x);
-            }
-          }         
-        },
-        moveY: function(y) {
-          if (player.Dir === "Up") {
-            let PlayerLoc = getPlayerTileCoord(this.x, this.y - (scaled_size * 0.5));
-            let PlayerLocLeft = getPlayerTileCoord(this.x - (scaled_size * 0.5 -6), this.y - (scaled_size * 0.5));
-            let PlayerLocRight = getPlayerTileCoord(this.x + (scaled_size * 0.5 -6), this.y - (scaled_size * 0.5));
-            if ((this.y -= (y)) <= (0 + (scaled_size * 0.5))) {
-              this.y = (0 + (scaled_size * 0.5));
-              player.isMoving = false;
-            } else if (/*Map.Collisions[PlayerLoc].up == "True" ||*/
-                       Map.Collisions[PlayerLocLeft].up == "True" || 
-                       Map.Collisions[PlayerLocRight].up == "True") {
-              this.y += (y);
-              player.isMoving = false;
-            } else {
-              this.y -= (y);
-            }
-          } else if (player.Dir === "Down") {
-            let PlayerLoc = getPlayerTileCoord(this.x, this.y + (scaled_size * 0.5));
-            let PlayerLocLeft = getPlayerTileCoord(this.x - (scaled_size * 0.5 -6), this.y + (scaled_size * 0.5));
-            let PlayerLocRight = getPlayerTileCoord(this.x + (scaled_size * 0.5 -6), this.y + (scaled_size * 0.5));
-            if ((this.y += (y)) >= (max_map_Y * scaled_size) - (scaled_size * 0.5)) {
-              this.y = (max_map_Y * scaled_size) - (scaled_size * 0.5);
-              player.isMoving = false;
-            } else if (/*Map.Collisions[PlayerLoc].down == "True" ||*/
-                       Map.Collisions[PlayerLocLeft].down == "True" || 
-                       Map.Collisions[PlayerLocRight].down == "True") {
-              this.y -= (y);
-              player.isMoving = false;
-            } else {
-              this.y += (y);
-            }
-          }
-        }
-      };
-      
-      
-      
-      
-      const ViewPort = function(x, y, w, h) {
-        this.x = x; this.y = y; this.w = w; this.h = h;
-      };
-            
-      ViewPort.prototype = {
-        scrollToX:function(x) {
-          this.x = x - this.w * 0.5;
-        },
-        scrollToY:function(y) {
-          this.y = y - this.h * 0.5;
-        }
-      };
-      
-      
-      
-      var maxNpcs = 100;
-      var Npcs = new Array();
-      
-      function Npc(name, sprite) {
-        this.name = name;
-        this.sprite = sprite;
+/////////////////////////////////
+//   Handle Player Character   //
+/////////////////////////////////
+
+// Player Variables
+var walkSpeed = 0.75;
+var runSpeed = 1.25;
+var sprite_size = 32;  // Deprecrated?
+var sprite_width = 33; // Deprecrated?
+var playerSprite = 0;  // Move to Player Model in the future
+
+// Define Player
+const Player = function(x,y,isMoving,Dir,Speed,AnimDir,AnimStep){
+  this.x = x; this.y = y;
+  this.isMoving = isMoving;
+  this.Dir = Dir;
+  this.Speed = Speed;
+  this.AnimDir = AnimDir;
+  this.AnimStep = AnimStep;
+};
+
+// Handle Player Movement
+Player.prototype = {
+  moveX: function(x) {
+    if (player.Dir === "Right") {
+      //let PlayerLoc = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y);
+      let PlayerLocTop = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y - (scaled_size * 0.5 - 6));
+      let PlayerLocBottom = getPlayerTileCoord(this.x + (scaled_size * 0.5), this.y + (scaled_size * 0.5 - 6));
+      // Check Map Boundaries
+      if ((this.x += (x)) >= ((max_map_X * scaled_size) - (scaled_size * 0.5))) {
+        this.x = (max_map_X * scaled_size) - (scaled_size * 0.5);
+        player.isMoving = false;
+      // Check Collision Boundaries
+      } else if (/*Map.Collisions[PlayerLoc].right == "True" || */
+                 Map.Collisions[PlayerLocTop].right == "True" ||
+                 Map.Collisions[PlayerLocBottom].right == "True") {
+        player.isMoving = false;
+        this.x -= (x);
+      } else {
+        this.x += (x);
       }
-      
-      function setNpc(id, name, sprite) {
-        Npcs[id] = new Npc(name, sprite);
+    } else if (player.Dir === "Left") {
+      //let PlayerLoc = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y);
+      let PlayerLocTop = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y - (scaled_size * 0.5 - 6));
+      let PlayerLocBottom = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y + (scaled_size * 0.5 - 6));
+      if ((this.x -= (x)) <= (0 + (scaled_size * 0.5))) {
+        this.x = (0 + (scaled_size * 0.5));
+        player.isMoving = false;
+      } else if (/*Map.Collisions[PlayerLoc].left == "True" || */
+                 Map.Collisions[PlayerLocTop].left == "True" ||
+                 Map.Collisions[PlayerLocBottom].left == "True") {
+        player.isMoving = false;
+        this.x += (x);
+      } else {
+        this.x -= (x);
       }
-      
-      function loadNpcs() {
-        let id = 0;
-        for (id = 0; id < maxNpcs; id++) {
-          var npc = new Npc("", 0); // Populate the Nps array with empty Npcs
-          Npcs.push(npc);
-        }
+    }         
+  },
+  moveY: function(y) {
+    if (player.Dir === "Up") {
+      //let PlayerLoc = getPlayerTileCoord(this.x, this.y - (scaled_size * 0.5));
+      let PlayerLocLeft = getPlayerTileCoord(this.x - (scaled_size * 0.5 -6), this.y - (scaled_size * 0.5));
+      let PlayerLocRight = getPlayerTileCoord(this.x + (scaled_size * 0.5 -6), this.y - (scaled_size * 0.5));
+      if ((this.y -= (y)) <= (0 + (scaled_size * 0.5))) {
+        this.y = (0 + (scaled_size * 0.5));
+        player.isMoving = false;
+      } else if (/*Map.Collisions[PlayerLoc].up == "True" ||*/
+                 Map.Collisions[PlayerLocLeft].up == "True" || 
+                 Map.Collisions[PlayerLocRight].up == "True") {
+        this.y += (y);
+        player.isMoving = false;
+      } else {
+        this.y -= (y);
       }
-      loadNpcs();
+    } else if (player.Dir === "Down") {
+      //let PlayerLoc = getPlayerTileCoord(this.x, this.y + (scaled_size * 0.5));
+      let PlayerLocLeft = getPlayerTileCoord(this.x - (scaled_size * 0.5 -6), this.y + (scaled_size * 0.5));
+      let PlayerLocRight = getPlayerTileCoord(this.x + (scaled_size * 0.5 -6), this.y + (scaled_size * 0.5));
+      if ((this.y += (y)) >= (max_map_Y * scaled_size) - (scaled_size * 0.5)) {
+        this.y = (max_map_Y * scaled_size) - (scaled_size * 0.5);
+        player.isMoving = false;
+      } else if (/*Map.Collisions[PlayerLoc].down == "True" ||*/
+                 Map.Collisions[PlayerLocLeft].down == "True" || 
+                 Map.Collisions[PlayerLocRight].down == "True") {
+        this.y -= (y);
+        player.isMoving = false;
+      } else {
+        this.y += (y);
+      }
+    }
+  }
+};
       
       
       
-      var walkSpeed = 0.75;
-      var runSpeed = 1.25;
+//////////////////////////////////////////
+//   Set Viewport (gameScreen camera)   //
+//////////////////////////////////////////
+
+// Define the Viewport Blueprint
+const ViewPort = function(x, y, w, h) {
+  this.x = x; this.y = y; this.w = w; this.h = h;
+};
+
+// Keep Viewport Centered on Player
+ViewPort.prototype = {
+  scrollToX:function(x) {
+    this.x = x - this.w * 0.5;
+  },
+  scrollToY:function(y) {
+    this.y = y - this.h * 0.5;
+  }
+};
+      
+      
+
+///////////////////////////
+//   Handle World Npcs   //
+///////////////////////////
+
+// Npc Variables
+var maxNpcs = 100;
+var Npcs = new Array();
+
+// Create Npc Blueprint
+function Npc(name, sprite) {
+  this.name = name;
+  this.sprite = sprite;
+}
+
+// Create New Unique Npc
+function setNpc(id, name, sprite) {
+  Npcs[id] = new Npc(name, sprite);
+}
+
+// Populate Blank Npcs
+function loadNpcs() {
+  let id = 0;
+  for (id = 0; id < maxNpcs; id++) {
+    var npc = new Npc("", 0); // Populate the Nps array with empty Npcs
+    Npcs.push(npc);
+  }
+}
+loadNpcs(); // In the future we'll only load blank Npcs if
+            // there aren't any Npcs saved in the database
+      
+      
+      
+      
       
       var chatBoxOpened = false;
       
-      var sprite_size = 32;
-      var sprite_width = 33;
+      
       var scaled_size = 96;
       
       var max_map_X = 255;
