@@ -76,9 +76,10 @@ function loop() {
   let player_height = getSprites[playerSprite].height;
   let pScale_w = player_width * 3;
   let pScale_h = player_height * 3;
+  let pOffset = 12 //Math.ceil((pScale_h - scaled_size) / 2) + 4; (This is broken)
   gameScreen.drawImage(getSprites[playerSprite], (player_width * player.AnimDir) + (player.AnimStep * player_width), 0,
                     getSprites[playerSprite].height, (getSprites[playerSprite].width/12), Math.round((player.x - viewport.x + width * 0.5 - viewport.w * 0.5) - pScale_w * 0.5), 
-                    Math.round((player.y - viewport.y + height * 0.5 - viewport.h * 0.5) - pScale_w * 0.5), pScale_w, pScale_h);
+                    Math.floor(((player.y - viewport.y + height * 0.5 - viewport.h * 0.5) - pScale_w * 0.5) - pOffset), pScale_w, pScale_h);
         
   //////////////////////////
   //   DRAW ABOVE PLAYER  //
