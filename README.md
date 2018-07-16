@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 Language: JavaScript, HTML
 Dependencies: jQuery, jQueryUI
-Version: ac-0.1.2
+Version: ac-0.1.3
 
 ### Mostly Complete Features:
 
@@ -50,6 +50,11 @@ Version: ac-0.1.2
 
 * Lots of improvements to code structure and file locations. General code refactoring to accomodate.
 * Massively reduced amount of world sprites and tiles to include into github.
+
+### What's new in version ac-0.1.3
+
+* More restructuring of major core components, code nesting, comments and code documentation.
+* Fixed issue regarding the way the Npc editor pushed changes to the Npcs array.
 
 
 ### Authors

@@ -39,9 +39,24 @@
     
     <!-- Load Editor UI Elements -->
     <div id="mapEditor" class="ui-widget-content snapUI" draggable="true"></div>
-    <div id="npcEditor" class="ui-widget-content snapUI" draggable="true"></div>    
+    <div id="npcEditor" class="ui-widget-content snapUI" draggable="true"></div>
+    
+    <!-- Load Main GameLoop JS -->
+    <script src="js/gameLoop.js"></script>
     
     <!-- Load Main GameEngine JS -->
     <script src="js/gameEngine.js"></script>
+    
+    <!-- Inject UI Elements into GameScreen -->
+    <script>
+      // Editor UI
+      $("#mapEditor").load("editors/mapEditor.html");
+      $("#npcEditor").load("editors/npcEditor.html");3      
+      // General UI
+      $("#chatBox").load("ui/chatBox.html");
+      var chatTop = window.innerHeight - 276;
+      $("#chatBox").css("top", chatTop);
+    </script>
+    
   </body>
 </html>
