@@ -2,7 +2,7 @@
   <div id="chatContainer">
     <div id="chatText">
       <strong>Mirage Web Engine</strong><br />
-      <strong>Version: ac-0.1.3</strong><br />
+      <strong>Version: ac-0.1.4</strong><br />
       <strong>Author: </strong>Rian Ruggles<br /><br />
       
       <strong>Notes:</strong>
@@ -14,6 +14,7 @@
       <br />/npceditor
       <br />/mapeditor
       <br />/setsprite # (0 - 5)
+      <br />/warptomap # (0 - 25)
       <br /><br />
     </div>
     <input id="chatInput" type="text">
@@ -51,7 +52,17 @@
         }
         chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
         $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
-        chatInput.value = "";                 
+        chatInput.value = "";
+      } else if (chatMsg.substr(0, 11) == "/warptomap ") {
+        var warpToMap = parseInt(chatMsg.substr(11));
+        // Make sure warpToMap is in range        
+        if (warpToMap >=0 && warpToMap <= maxWorldMaps) {
+          player.worldMap = warpToMap;
+          setActiveMap(player.worldMap);
+        }
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
       } else {
         if (chatMsg == "") {
           // Close the ChatBox        
@@ -67,9 +78,7 @@
         }
       }
 
-      //chatInput.value = "";
     }
   }
-  //alert("/setsprite 10".substr(0, 11));
-//alert("/setsprite 10".substr(11));
+
 </script>

@@ -121,38 +121,38 @@ function gameScreenClick(event) {
   if (mapEditorState == "Max") {
     switch(mapEditorLayer) {
     case "Ground":
-      Map.Ground[pointer_index].PosX = brush_Coord_X;
-      Map.Ground[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Ground[pointer_index].PosX = brush_Coord_X;
+      activeMap.Ground[pointer_index].PosY = brush_Coord_Y;
       break;
     case "Animation":
-      Map.Animation[pointer_index].PosX_1 = mapAnimation[0];
-      Map.Animation[pointer_index].PosY_1 = mapAnimation[1];
-      Map.Animation[pointer_index].PosX_2 = mapAnimation[2];
-      Map.Animation[pointer_index].PosY_2 = mapAnimation[3];
+      activeMap.Animation[pointer_index].PosX_1 = mapAnimation[0];
+      activeMap.Animation[pointer_index].PosY_1 = mapAnimation[1];
+      activeMap.Animation[pointer_index].PosX_2 = mapAnimation[2];
+      activeMap.Animation[pointer_index].PosY_2 = mapAnimation[3];
       break;
     case "Mask":
-      Map.Mask[pointer_index].PosX = brush_Coord_X;
-      Map.Mask[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Mask[pointer_index].PosX = brush_Coord_X;
+      activeMap.Mask[pointer_index].PosY = brush_Coord_Y;
       break;
     case "Mask2":
-      Map.Mask2[pointer_index].PosX = brush_Coord_X;
-      Map.Mask2[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Mask2[pointer_index].PosX = brush_Coord_X;
+      activeMap.Mask2[pointer_index].PosY = brush_Coord_Y;
       break;
     case "Fringe":
-      Map.Fringe[pointer_index].PosX = brush_Coord_X;
-      Map.Fringe[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Fringe[pointer_index].PosX = brush_Coord_X;
+      activeMap.Fringe[pointer_index].PosY = brush_Coord_Y;
       break;
     case "Fringe2":
-      Map.Fringe2[pointer_index].PosX = brush_Coord_X;
-      Map.Fringe2[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Fringe2[pointer_index].PosX = brush_Coord_X;
+      activeMap.Fringe2[pointer_index].PosY = brush_Coord_Y;
       break;
     case "Collision":
-      Map.Collisions[pointer_index].PosX = brush_Coord_X;
-      Map.Collisions[pointer_index].PosY = brush_Coord_Y;
-      Map.Collisions[pointer_index].up = mapCollider[0];
-      Map.Collisions[pointer_index].down = mapCollider[1];
-      Map.Collisions[pointer_index].left = mapCollider[2];
-      Map.Collisions[pointer_index].right = mapCollider[3];
+      activeMap.Collisions[pointer_index].PosX = brush_Coord_X;
+      activeMap.Collisions[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Collisions[pointer_index].up = mapCollider[0];
+      activeMap.Collisions[pointer_index].down = mapCollider[1];
+      activeMap.Collisions[pointer_index].left = mapCollider[2];
+      activeMap.Collisions[pointer_index].right = mapCollider[3];
       break;
     }
   }

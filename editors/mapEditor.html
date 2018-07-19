@@ -115,11 +115,11 @@
       var X = (e.pageX - offset.left);
       var Y = (e.pageY - offset.top);
 
-      brush_Coord_X = (Math.floor(X / sprite_size) * sprite_size) / sprite_size;
-      brush_Coord_Y= (Math.floor(Y / sprite_size) * sprite_size) / sprite_size;
+      brush_Coord_X = (Math.floor(X / tile_size) * tile_size) / tile_size;
+      brush_Coord_Y= (Math.floor(Y / tile_size) * tile_size) / tile_size;
 
-      $('#mapEditorTile').css("top", brush_Coord_Y * sprite_size);
-      $('#mapEditorTile').css("left", brush_Coord_X * sprite_size);
+      $('#mapEditorTile').css("top", brush_Coord_Y * tile_size);
+      $('#mapEditorTile').css("left", brush_Coord_X * tile_size);
       
       if (mapEditorLayer == "Animation") {
         if (mapAnimation[0] == 0 && mapAnimation[1] == 0) {

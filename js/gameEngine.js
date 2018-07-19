@@ -37,9 +37,9 @@ Player.prototype = {
         this.x = (max_map_X * scaled_size) - (scaled_size * 0.5);
         player.isMoving = false;
       // Check Collision Boundaries
-      } else if (/*Map.Collisions[PlayerLoc].right == "True" || */
-                 Map.Collisions[PlayerLocTop].right == "True" ||
-                 Map.Collisions[PlayerLocBottom].right == "True") {
+      } else if (/*activeMap.Collisions[PlayerLoc].right == "True" || */
+                 activeMap.Collisions[PlayerLocTop].right == "True" ||
+                 activeMap.Collisions[PlayerLocBottom].right == "True") {
         player.isMoving = false;
         this.x -= (x);
       } else {
@@ -52,9 +52,9 @@ Player.prototype = {
       if ((this.x -= (x)) <= (0 + (scaled_size * 0.5))) {
         this.x = (0 + (scaled_size * 0.5));
         player.isMoving = false;
-      } else if (/*Map.Collisions[PlayerLoc].left == "True" || */
-                 Map.Collisions[PlayerLocTop].left == "True" ||
-                 Map.Collisions[PlayerLocBottom].left == "True") {
+      } else if (/*activeMap.Collisions[PlayerLoc].left == "True" || */
+                 activeMap.Collisions[PlayerLocTop].left == "True" ||
+                 activeMap.Collisions[PlayerLocBottom].left == "True") {
         player.isMoving = false;
         this.x += (x);
       } else {
@@ -70,9 +70,9 @@ Player.prototype = {
       if ((this.y -= (y)) <= (0 + (scaled_size * 0.5))) {
         this.y = (0 + (scaled_size * 0.5));
         player.isMoving = false;
-      } else if (/*Map.Collisions[PlayerLoc].up == "True" ||*/
-                 Map.Collisions[PlayerLocLeft].up == "True" || 
-                 Map.Collisions[PlayerLocRight].up == "True") {
+      } else if (/*activeMap.Collisions[PlayerLoc].up == "True" ||*/
+                 activeMap.Collisions[PlayerLocLeft].up == "True" || 
+                 activeMap.Collisions[PlayerLocRight].up == "True") {
         this.y += (y);
         player.isMoving = false;
       } else {
@@ -85,9 +85,9 @@ Player.prototype = {
       if ((this.y += (y)) >= (max_map_Y * scaled_size) - (scaled_size * 0.5)) {
         this.y = (max_map_Y * scaled_size) - (scaled_size * 0.5);
         player.isMoving = false;
-      } else if (/*Map.Collisions[PlayerLoc].down == "True" ||*/
-                 Map.Collisions[PlayerLocLeft].down == "True" || 
-                 Map.Collisions[PlayerLocRight].down == "True") {
+      } else if (/*activeMap.Collisions[PlayerLoc].down == "True" ||*/
+                 activeMap.Collisions[PlayerLocLeft].down == "True" || 
+                 activeMap.Collisions[PlayerLocRight].down == "True") {
         this.y -= (y);
         player.isMoving = false;
       } else {
@@ -304,26 +304,43 @@ function setCollision() {
 }
 
 // Empty Map Blueprint
-var Map = {
-  Name: "Starting Map",
-  Moral: "PvP",
-  BootMap: "1",
-  BootX: "1",
-  BootY: "1",
-  Ground : setGround(),
-  Animation: setAnimation(),
-  Mask: setMask(),
-  Mask2: setMask2(),
-  Fringe: setFringe(),
-  Fringe2: setFringe2(),
-  Collisions: setCollision()
-};
+//var Map = {
+//  Name: "Starting Map",
+//  Moral: "PvP",
+//  BootMap: "1",
+//  BootX: "1",
+//  BootY: "1",
+//  Ground : setGround(),
+//  Animation: setAnimation(),
+//  Mask: setMask(),
+//  Mask2: setMask2(),
+//  Fringe: setFringe(),
+//  Fringe2: setFringe2(),
+//  Collisions: setCollision()
+//};
+
+function Map(Name, Moral, BootMap, BootX, BootY) {
+  this.Name = Name;
+  this.Moral = Moral;
+  this.BootMap = BootMap;
+  this.BootX = BootX;
+  this.BootY = BootY;
+  this.Ground = setGround();
+  this.Animation = setAnimation();
+  this.Mask = setMask();
+  this.Mask2 = setMask2();
+  this.Fringe = setFringe();
+  this.Fringe2 = setFringe2();
+  this.Collisions = setCollision();
+}
 
 // Generate worldMaps Array
 function generateWorldMaps() {
   var id;
   for (id = 0; id < maxWorldMaps; id++) {
-    worldMaps[id] = Map;
+    //worldMaps[id] = Map;
+    var thisMap = new Map("", "PvP", 0, 0, 0);
+    worldMaps.push(thisMap);
   }
 }
 generateWorldMaps();
@@ -332,8 +349,6 @@ generateWorldMaps();
 function setActiveMap(mapID) {
   activeMap = worldMaps[mapID];
 }
-
-
 
 //////////////////////////////////////////
 //   Initialize gameEngine Components   //
