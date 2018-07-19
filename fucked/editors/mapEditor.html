@@ -1,0 +1,275 @@
+<div class="ui-widget-header editorBar">
+  <span>
+    <strong>&nbsp;Map Editor</strong>
+    <strong id="mapEditorX" class="fRight boxed" style="background-color: #ce8484;">X</strong>
+    <strong id="mapEditor-" class="fRight boxed" style="background-color: #1698bc;">_</strong>
+  </span>
+</div>
+<div id="tileSheetContainer">
+  <div id="tileSheet">
+    <div id="mapEditorTile"></div>
+  </div>
+  <br />        
+</div>
+      
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'Layers')">Layers</button>
+  <button class="tablinks" onclick="openTab(event, 'Attributes')">Attributes</button>
+  <button class="tablinks" onclick="openTab(event, 'Tools')">Tools</button>
+</div>
+<!-- Tab content -->
+<div id="Layers" class="tabcontent">
+  <br />
+  <form style="padding: 0 15px;">
+    <div class="p50" style="float: left">
+      <label class="optLabel"><input type="radio" id="optGround" name="optLayer" checked="checked"> Ground</label>
+      <label class="optLabel"><input type="radio" id="optAnim" name="optLayer">  Animation</label>
+      <label class="optLabel"><input type="radio" id="optMask" name="optLayer"> Mask</label>
+    </div>
+    <div class="p50" style="float: left">
+      <label class="optLabel"><input type="radio" id="optMask2" name="optLayer"> Mask 2</label>
+      <label class="optLabel"><input type="radio" id="optFringe" name="optLayer"> Fringe</label>
+      <label class="optLabel"><input type="radio" id="optFringe2" name="optLayer"> Fringe 2</label>
+    </div>
+  </form>
+  <strong id="clearBrush" style="display: block; max-width: 100%; cursor: pointer; padding: 7px 15px;">Reset Animation Brush</strong>
+</div>
+<div id="Attributes" class="tabcontent">
+  <br />
+  <div id="attContainer">
+    <div style="width: 50%; float: left; padding-left: 15px;">
+      <span id="btnCollision" class="editorAttribute mar7R" style="margin-top: 0px;">Collision</span>
+      <span id="btnNpcSpawn" class="editorAttribute mar7R" disabled>Npc Spawn</span>
+      <span id="btnTeleport" class="editorAttribute mar7R" disabled>Npc Avoid</span>
+    </div>
+    <div style="width: 50%; float: left; padding-right: 15px;">
+      <span id="" class="editorAttribute mar7L" style="margin-top: 0px;">Door/Key</span>
+      <span id="" class="editorAttribute mar7L" disabled>Loot Chest</span>
+      <span id="" class="editorAttribute mar7L" disabled>Teleport</span>
+    </div>
+  </div>
+  <div id="attCollision" style="padding: 0 15px; display: none; max-width: 273px !important;">
+    <span style="display: block; margin-bottom: 12px !important;">
+      <strong>Player Collision: </strong>
+      <strong id="colToggle" style="color: #1764B2; float: right; cursor: pointer;">&lt;&lt; Back</strong>
+    </span>
+    <form>
+      <div class="pad7R" style="width: 50%; float: left;">
+        <span>Up</span>
+        <select id="collideUp">
+          <option value="True">True</option>
+          <option value="False">False</option>
+        </select> 
+      </div>
+      <div  class="pad7L" style="width: 50%; float: left;">
+        <span>Down</span>
+        <select id="collideDown">
+          <option value="True">True</option>
+          <option value="False">False</option>
+        </select> 
+      </div>
+      <div class="pad7R" style="width: 50%; float: left;">
+        <span>Left</span>
+        <select id="collideLeft">
+          <option value="True">True</option>
+          <option value="False">False</option>
+        </select> 
+      </div>
+      <div class="pad7L" style="width: 50%; float: left;">
+        <span>Right</span>
+        <select id="collideRight">
+          <option value="True">True</option>
+          <option value="False">False</option>
+        </select> 
+      </div>
+    </form>
+  </div>
+</div>
+<div id="Tools" class="tabcontent">
+  <br />
+  <form style="padding: 0 15px;">
+    <label class="optLabel"><input type="checkbox" id="optWorldGrid" name="optWorldGrid" checked> World Grid</label>
+    <label class="optLabel"><input type="checkbox" id="optWorldColliders" name="optWorldColliders" checked> World Colliders</label>
+  </form>
+</div>
+      
+<!-- Save / Cancel Changes -->
+<form>
+  <div class="p50 fLeft pad">
+    <button class="EditorButton" disabled="true">Save</button>
+  </div>
+  <div class="p50 fLeft pad">
+    <button class="EditorButton" disabled="true">Cancel</button>
+  </div>
+</form>
+
+<script>
+  var editorTop = 20;
+  var editorLeft =20
+  var editorWidth= $("#mapEditor").outerWidth();
+  var editorHeight= 581;
+  $(document).ready(function() {
+    $('#tileSheet').click(function(e) {
+      var offset = $(this).offset();
+      var X = (e.pageX - offset.left);
+      var Y = (e.pageY - offset.top);
+
+      brush_Coord_X = (Math.floor(X / sprite_size) * sprite_size) / sprite_size;
+      brush_Coord_Y= (Math.floor(Y / sprite_size) * sprite_size) / sprite_size;
+
+      $('#mapEditorTile').css("top", brush_Coord_Y * sprite_size);
+      $('#mapEditorTile').css("left", brush_Coord_X * sprite_size);
+      
+      if (mapEditorLayer == "Animation") {
+        if (mapAnimation[0] == 0 && mapAnimation[1] == 0) {
+          mapAnimation[0] = brush_Coord_X;
+          mapAnimation[1] = brush_Coord_Y;
+        } else if (mapAnimation[2] == 0 && mapAnimation[3] == 0) {
+          mapAnimation[2] = brush_Coord_X;
+          mapAnimation[3] = brush_Coord_Y;
+        }
+      }
+
+      $('#brushCoord').text('Brush Coordinates   X: ' + brush_Coord_X + ', Y: ' + brush_Coord_Y);
+    });
+  });
+  
+  // Calculate Screen Position After Dragging
+  $(".editorBar").mouseup(function(e) {
+    if($(e.target).is("#mapEditor-")) return;
+    var mpEditor = $("#mapEditor");
+    var position = mpEditor.position();
+    editorTop = position.top;
+    editorLeft = position.left;
+  });
+
+  $(function() {
+    $("#mapEditor").draggable({ handle: ".ui-widget-header", containment: "#gameScreen", scroll: false, snap: ".snapUI" });
+  });      
+
+  function openTab(evt, tabName) {
+    $("#attContainer").show();
+    $("#attCollision").hide();
+    // Declare all variables
+    var i, tabcontent, tablinks;
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }      
+  document.getElementById("Layers").style.display = "block";
+  
+  
+  $("#mapEditorX").click(function() {
+    mapEditorState = "Closed";
+    $("#mapEditor").hide();
+  });
+      
+  $("#mapEditor-").click(function() {
+    if (mapEditorState == "Max") {
+      mapEditorState = "Min";
+
+      document.getElementById("mapEditor-").innerHTML = "+";
+      
+      var top = window.height - 34;
+      $('#mapEditor').animate({
+        top: top,
+        left: 0,
+        width: '250px',
+        height: 34
+      });
+        
+    } else {
+      mapEditorState = "Max";
+
+      $('#mapEditor').animate({
+        top: editorTop,
+        left: editorLeft,
+        width: editorWidth + "px",
+        height: editorHeight + "px"
+      });
+      document.getElementById("mapEditor-").innerHTML = "_";
+    }
+  });
+      
+  $("#optGround").click(function() {
+    mapEditorLayer = "Ground";
+  });
+
+  $("#optAnim").click(function() {
+    mapEditorLayer = "Animation";
+  });
+  
+  $("#optMask").click(function() {
+    mapEditorLayer = "Mask";
+  });
+
+  $("#optMask2").click(function() {
+    mapEditorLayer = "Mask2";
+  });
+  
+  $("#optAnimation").click(function() {
+    mapEditorLayer = "Animation";
+  });
+  
+  $("#optFringe").click(function() {
+    mapEditorLayer = "Fringe";
+  });
+  
+  $("#optFringe2").click(function() {
+    mapEditorLayer = "Fringe2";
+  });
+  
+  $("#clearBrush").click(function() {
+    mapAnimation =[0, 0, 0, 0]
+  });
+  
+  $("#btnCollision").click(function() {
+    mapEditorLayer = "Collision";
+    $("#attContainer").hide();
+    $("#attCollision").show();
+  });
+  
+  $("#optWorldGrid").click(function() {
+    if (worldGrid === false) {
+      worldGrid = true;
+    } else { worldGrid = false; }
+  });
+  
+  $("#optWorldColliders").click(function() {
+    if (worldColliders === false) {
+      worldColliders = true;
+    } else { worldColliders = false; }
+  });
+      
+  $("#colToggle").click(function() {
+    $("#attContainer").show();
+    $("#attCollision").hide();
+  });       
+      
+  $('#collideUp').on('change', function() {
+    mapCollider[0] = this.value;
+  });
+  
+  $('#collideDown').on('change', function() {
+    mapCollider[1] = this.value;
+  });
+  
+  $('#collideLeft').on('change', function() {
+    mapCollider[2] = this.value;
+  });
+  
+  $('#collideRight').on('change', function() {
+    mapCollider[3] = this.value;
+  });
+</script>

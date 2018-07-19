@@ -1,0 +1,62 @@
+/* //////////////////
+   //  MAP EDITOR  //
+   ////////////////// */ 
+#mapEditor * {-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+#mapEditor {position: absolute; display: none; width: auto; z-index: 2; left: 20px; top: 20px; background-color: #f1f1f1;
+            font-family: monospace; border: 2px solid #1764b2; border-radius: 10px 10px 0 0;
+            overflow-y: hidden;}
+.editorBar {position: relative; width: 100%; height: 32px; background-color: #1764b2; padding: 4px 6px;
+            font-size: 20px; color: #fff; cursor: all-scroll; border-bottom: 2px solid #1764b2;
+            overflow: hidden;}
+#tileSheetContainer {background-color: #000; width: 273px; max-height: 320px !important; white-space: nowrap; 
+                    overflow-y: scroll;}
+.EditorButton {width: 100%; height: 35px; cursor: pointer;}
+.editorHeader {background-color: #ddd; text-align: center; font-size: 14px; padding: 12px;}
+.editorAttribute {display: block; padding: 4px; border: 1px solid #666; background-color: #ddd; text-align: center;
+                  cursor: pointer; margin-top: 4px; opacity: 0.5;}
+/*.editorAttribute:hover {background-color: #ccc;}*/
+#btnCollision {opacity: 1;}
+#btnCollision:hover {background-color: #ccc;}
+.optLabel {display: block; margin-bottom: 7px; cursor: pointer;}
+/*#tileSheet {position: relative; cursor: crosshair;}*/
+#tileSheet {background-image: url(../img/tilesets/1.png); cursor: crosshair; overflow-y: hidden !important;}
+#tileSheet {height: 768px;} /* Make this equal to the height of the actual tilesheet */
+#mapEditorTile {height: 32px; width: 32px; border: 3px dashed #ff00b6; position: relative;}
+#brushCoord {padding: 10px; margin-top: 30px !important;}
+
+/* ///////////////////////
+   //  MAP EDITOR TABS  //
+   /////////////////////// */ 
+
+ /* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #ccc;
+}
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #f1f1f1;
+}
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    border-top: none;
+    background-color: #F1F1F1;
+    height: 130px;
+}

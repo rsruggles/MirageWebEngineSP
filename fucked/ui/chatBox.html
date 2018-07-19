@@ -1,0 +1,75 @@
+  
+  <div id="chatContainer">
+    <div id="chatText">
+      <strong>Mirage Web Engine</strong><br />
+      <strong>Version: ac-0.1.3</strong><br />
+      <strong>Author: </strong>Rian Ruggles<br /><br />
+      
+      <strong>Notes:</strong>
+      <br />1. When the animation layer is selected load the brush with <i>two</i> map editor tiles. When placed in the world, these two tiles will cycle.
+      <br />2. Click "Reset Animation Brush" to reset the brush. Currently, nothing indicates that the brush has been reset, but it works in the mean time.
+      
+      <br /><br />
+      <strong>Commands:</strong>
+      <br />/npceditor
+      <br />/mapeditor
+      <br />/setsprite # (0 - 5)
+      <br /><br />
+    </div>
+    <input id="chatInput" type="text">
+  </div>
+
+
+<script type="text/javascript">
+  
+  $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+  
+  // Interpret Chat Text / Commands
+  var chatInput = document.getElementById('chatInput');
+  var chatText = document.getElementById('chatText');
+  
+  chatInput.onkeyup = function (event){    
+    if (event.keyCode === 13)  {
+      var chatMsg = chatInput.value;
+      if (chatMsg == "/mapeditor") {
+        $("#mapEditor").show();
+        mapEditorState = "Max";
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
+      } else if (chatMsg == "/npceditor") {
+        $("#npcEditor").show();
+        //mapEditorState = "Max";
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
+      } else if (chatMsg.substr(0, 11) == "/setsprite ") {
+        var inputSprite = parseInt(chatMsg.substr(11));
+        // Make sure inputSprite is in range
+        if (inputSprite >=0 && inputSprite <= maxSprites) {
+          playerSprite = inputSprite;
+        }
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";                 
+      } else {
+        if (chatMsg == "") {
+          // Close the ChatBox        
+          if (chatBoxOpened === true) {
+            chatBoxOpened = false;
+            $("#chatBox").hide("slide", { direction: "left" }, 750);
+            setTimeout(function(){ $(':focus').blur(); }, 800);
+          }          
+        } else {
+          chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+          $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+          chatInput.value = "";
+        }
+      }
+
+      //chatInput.value = "";
+    }
+  }
+  //alert("/setsprite 10".substr(0, 11));
+//alert("/setsprite 10".substr(11));
+</script>

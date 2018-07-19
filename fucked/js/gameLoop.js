@@ -30,41 +30,41 @@ function loop() {
   //   DRAW BELOW PLAYER   //
   ///////////////////////////
   for (let x = x_min; x < x_max; x++) {
-    for (let y = y_min; y < y_max; y++) {            
+    for (let y = y_min; y < y_max; y++) {
       // Draw Ground Layer
-      let valueX = activeMap.Ground[y * max_map_X + x].PosX;
-      let valueY = activeMap.Ground[y * max_map_Y + x].PosY;
+      let valueX = Map.Ground[y * max_map_X + x].PosX;
+      let valueY = Map.Ground[y * max_map_Y + x].PosY;
       let tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
       let tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
-      gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+      gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
       // Draw Animation Layer
-      if (mapAnimFrame == false) {
-        valueX = activeMap.Animation[y * max_map_X + x].PosX_1;
-        valueY = activeMap.Animation[y * max_map_Y + x].PosY_1;
+      if (mapAnimFrame === false) {
+        valueX = Map.Animation[y * max_map_X + x].PosX_1;
+        valueY = Map.Animation[y * max_map_Y + x].PosY_1;
       } else {
-        valueX = activeMap.Animation[y * max_map_X + x].PosX_2;
-        valueY = activeMap.Animation[y * max_map_Y + x].PosY_2;
+        valueX = Map.Animation[y * max_map_X + x].PosX_2;
+        valueY = Map.Animation[y * max_map_Y + x].PosY_2;
       }
       if (valueX + valueY > 0) {
         tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
         tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
-        gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
       }
       // Draw Mask Layer
-      valueX = activeMap.Mask[y * max_map_X + x].PosX;
-      valueY = activeMap.Mask[y * max_map_Y + x].PosY;
+      valueX = Map.Mask[y * max_map_X + x].PosX;
+      valueY = Map.Mask[y * max_map_Y + x].PosY;
       if (valueX + valueY > 0) {
         tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
         tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
-        gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size); 
+        gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size); 
       }            
       // Draw Mask2 Layer
-      valueX = activeMap.Mask2[y * max_map_X + x].PosX;
-      valueY = activeMap.Mask2[y * max_map_Y + x].PosY;
+      valueX = Map.Mask2[y * max_map_X + x].PosX;
+      valueY = Map.Mask2[y * max_map_Y + x].PosY;
       if (valueX + valueY > 0) {
         tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
         tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
-        gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size); 
+        gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size); 
       }
     }
   }
@@ -88,34 +88,34 @@ function loop() {
   for (let x = x_min; x < x_max; x++) {
     for (let y = y_min; y < y_max; y++) {
       // Draw Fringe Layer
-      let valueX = activeMap.Fringe[y * max_map_X + x].PosX;
-      let valueY = activeMap.Fringe[y * max_map_Y + x].PosY;
+      let valueX = Map.Fringe[y * max_map_X + x].PosX;
+      let valueY = Map.Fringe[y * max_map_Y + x].PosY;
       let tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
       let tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
       if (valueX + valueY > 0) {
-        gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
       }            
       // Draw Fringe2 Layer
-      valueX = activeMap.Fringe2[y * max_map_X + x].PosX;
-      valueY = activeMap.Fringe2[y * max_map_Y + x].PosY;
+      valueX = Map.Fringe2[y * max_map_X + x].PosX;
+      valueY = Map.Fringe2[y * max_map_Y + x].PosY;
       tile_x = Math.floor(x * scaled_size - viewport.x + width * 0.5 - viewport.w * 0.5);
       tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
       if (valueX + valueY > 0) {
-        gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        gameScreen.drawImage(tile_sheet, valueX * sprite_size, valueY * sprite_size, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
       }            
       // Draw Collision Tiles
       if (worldColliders === true && mapEditorState != "Closed") {
-        if (activeMap.Collisions[y * max_map_Y + x].up === "True") {
-          gameScreen.drawImage(collider_tile, 0, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        if (Map.Collisions[y * max_map_Y + x].up === "True") {
+          gameScreen.drawImage(collider_tile, 0, 0, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
         }
-        if (activeMap.Collisions[y * max_map_Y + x].down === "True") {
-          gameScreen.drawImage(collider_tile, 32, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        if (Map.Collisions[y * max_map_Y + x].down === "True") {
+          gameScreen.drawImage(collider_tile, 32, 0, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
         }
-        if (activeMap.Collisions[y * max_map_Y + x].left === "True") {
-          gameScreen.drawImage(collider_tile, 64, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        if (Map.Collisions[y * max_map_Y + x].left === "True") {
+          gameScreen.drawImage(collider_tile, 64, 0, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
         }
-        if (activeMap.Collisions[y * max_map_Y + x].right === "True") {
-          gameScreen.drawImage(collider_tile, 96, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        if (Map.Collisions[y * max_map_Y + x].right === "True") {
+          gameScreen.drawImage(collider_tile, 96, 0, sprite_size, sprite_size, tile_x, tile_y, scaled_size, scaled_size);
         }
       }            
       // Draw Grid Lines
@@ -155,5 +155,6 @@ function loop() {
   //   Draw The Next Animation Frame   //
   ///////////////////////////////////////
   window.requestAnimationFrame(loop);
+  
     
 }
