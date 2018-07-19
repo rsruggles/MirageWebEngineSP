@@ -335,8 +335,6 @@ function setActiveMap(mapID) {
 
 
 
-
-
 //////////////////////////////////////////
 //   Initialize gameEngine Components   //
 //////////////////////////////////////////
@@ -370,7 +368,7 @@ tile_sheet.src = "img/tilesets/1.png";
 // Initialize ColliderSheet
 var collider_tile = new Image();
 //collider_tile.addEventListener("load", (event) => {loop();});
-collider_tile.src = "img/editors/block-tile.png";
+collider_tile.src = "img/editors/editor-tiles.png";
 
 // Initialize SpriteSheets
 var maxSprites = 5;
