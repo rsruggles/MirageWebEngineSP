@@ -17,6 +17,8 @@
 /*.editorAttribute:hover {background-color: #ccc;}*/
 #btnCollision {opacity: 1;}
 #btnCollision:hover {background-color: #ccc;}
+#btnNpcSpawn {opacity: 1;}
+#btnNpcSpawn:hover {background-color: #ccc;}
 .optLabel {display: block; margin-bottom: 7px; cursor: pointer;}
 /*#tileSheet {position: relative; cursor: crosshair;}*/
 #tileSheet {background-image: url(../img/tilesets/1.png); cursor: crosshair; overflow-y: hidden !important;}

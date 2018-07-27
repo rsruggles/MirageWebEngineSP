@@ -40,7 +40,7 @@
   <div id="attContainer">
     <div style="width: 50%; float: left; padding-left: 15px;">
       <span id="btnCollision" class="editorAttribute mar7R" style="margin-top: 0px;">Collision</span>
-      <span id="btnNpcSpawn" class="editorAttribute mar7R" disabled>Npc Spawn</span>
+      <span id="btnNpcSpawn" class="editorAttribute mar7R">Npc Spawn</span>
       <span id="btnTeleport" class="editorAttribute mar7R" disabled>Npc Avoid</span>
     </div>
     <div style="width: 50%; float: left; padding-right: 15px;">
@@ -48,7 +48,8 @@
       <span id="" class="editorAttribute mar7L" disabled>Loot Chest</span>
       <span id="" class="editorAttribute mar7L" disabled>Teleport</span>
     </div>
-  </div>
+  </div> 
+  
   <div id="attCollision" style="padding: 0 15px; display: none; max-width: 273px !important;">
     <span style="display: block; margin-bottom: 12px !important;">
       <strong>Player Collision: </strong>
@@ -85,6 +86,22 @@
       </div>
     </form>
   </div>
+  
+  <div id="attMapNpc" style="padding: 0 15px; display: none; max-width: 273px !important">
+    <span style="display: block; margin-bottom: 12px !important;">
+      <strong>Map Npc Spawner: </strong>
+      <strong id="mapNpcToggle" style="color: #1764B2; float: right; cursor: pointer;">&lt;&lt; Back</strong>
+    </span>
+    <br />
+    <form style="display: block;">
+      <div class="pad7R" style="width: 100%; float: left;">
+        <span>Select a Npc to Spawn</span>
+        <select id="mapNpcSelect" style="display: block; width: 100%; !important">
+        </select>
+      </div>
+    </form>
+  </div>
+  
 </div>
 <div id="Tools" class="tabcontent">
   <br />
@@ -240,6 +257,12 @@
     $("#attCollision").show();
   });
   
+  $("#btnNpcSpawn").click(function() {
+    mapEditorLayer = "NpcSpawn";
+    $("#attContainer").hide();
+    $("#attMapNpc").show();
+  });
+  
   $("#optWorldGrid").click(function() {
     if (worldGrid === false) {
       worldGrid = true;
@@ -255,7 +278,12 @@
   $("#colToggle").click(function() {
     $("#attContainer").show();
     $("#attCollision").hide();
-  });       
+  });
+  
+  $("#mapNpcToggle").click(function() {
+    $("#attContainer").show();
+    $("#attMapNpc").hide();
+  });
       
   $('#collideUp').on('change', function() {
     mapCollider[0] = this.value;
@@ -272,4 +300,25 @@
   $('#collideRight').on('change', function() {
     mapCollider[3] = this.value;
   });
+  
+  // Handle Which Npc to Spawn
+  $('#mapNpcSelect').on('change', function() {
+    mapNpcID = Number(this.value);
+  });
+  
+  // Generate The MapNpc Dropdown
+  function generateMapNPCDropDown() {
+    let npcEditorSelect = document.getElementById("mapNpcSelect");
+    let npcOptHTML = "";
+    for (var i = 0; i < Npcs.length; i++) {
+      let thisNpc = Npcs[i];
+      let npcName = thisNpc.name;
+      if (npcName === "" || npcName === null) {
+        npcName = "Empty NPC Slot";
+      }
+      npcOptHTML += '<option value="' + i + '">' + (i+1) + ' ' + npcName + '</option>';
+    }
+    npcEditorSelect.innerHTML = npcOptHTML;
+  }
+  generateMapNPCDropDown();
 </script>

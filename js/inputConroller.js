@@ -133,6 +133,7 @@ function gameScreenClick(event) {
     case "Mask":
       activeMap.Mask[pointer_index].PosX = brush_Coord_X;
       activeMap.Mask[pointer_index].PosY = brush_Coord_Y;
+      console.log("X: " + brush_Coord_X + " Y: " + brush_Coord_Y);
       break;
     case "Mask2":
       activeMap.Mask2[pointer_index].PosX = brush_Coord_X;
@@ -153,6 +154,17 @@ function gameScreenClick(event) {
       activeMap.Collisions[pointer_index].down = mapCollider[1];
       activeMap.Collisions[pointer_index].left = mapCollider[2];
       activeMap.Collisions[pointer_index].right = mapCollider[3];
+      break;
+    case "NpcSpawn":
+      activeMap.NpcSpawn[pointer_index].PosX = brush_Coord_X;
+      activeMap.NpcSpawn[pointer_index].PosY = brush_Coord_Y;
+      activeMap.NpcSpawn[pointer_index].npcID = mapNpcID;
+      let mapNpcX = Math.round(pointer.x / scaled_size) * scaled_size;
+          mapNpcX = Math.round(mapNpcX + (scaled_size/2));          
+      let mapNpcY = Math.round(pointer.y / scaled_size) * scaled_size;
+          mapNpcY = Math.round(mapNpcY + (scaled_size/2));
+      activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, false, 0));
+      console.log(activeMap.Npcs);
       break;
     }
   }

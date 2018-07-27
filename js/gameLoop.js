@@ -82,8 +82,35 @@ function loop() {
   let pOffset = Math.floor((pScale_h - scaled_size) / 2);
   
   gameScreen.drawImage(getSprites[playerSprite], (player_width * player.AnimDir) + (player.AnimStep * player_width), 0,
-                      (getSprites[playerSprite].width/12), (getSprites[playerSprite].height), Math.ceil((player.x - viewport.x + width * 0.5 - viewport.w * 0.5) - pScale_w * 0.5), 
+                      player_width, player_height, Math.ceil((player.x - viewport.x + width * 0.5 - viewport.w * 0.5) - pScale_w * 0.5), 
                        Math.ceil(((player.y - viewport.y + height * 0.5 - viewport.h * 0.5) - pScale_w * 0.5) - pOffset), pScale_w, pScale_h);
+
+  /////////////////////////
+  //   DRAW WORLD NPCS   //
+  /////////////////////////
+  if (Array.isArray(activeMap.Npcs) && activeMap.Npcs.length) {
+    for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
+      if (activeMap.Npcs[npcId] === undefined) { break; }
+      let npc_width = getSprites[activeMap.Npcs[npcId].Sprite].width / 12;
+      let npc_height = getSprites[activeMap.Npcs[npcId].Sprite].height;
+      let npcScale_w = npc_width * 3;
+      let npcScale_h = npc_height * 3;
+      let npcOffset = Math.floor((npcScale_h - scaled_size) / 2);
+        
+      let npcX = Math.floor(activeMap.Npcs[npcId].X - viewport.x + width * 0.5 - viewport.w * 0.5);
+          
+      let npcY = Math.floor(activeMap.Npcs[npcId].Y - viewport.y + height * 0.5 - viewport.h * 0.5);
+      
+      let npcDir = activeMap.Npcs[npcId].Direction;
+          
+      gameScreen.drawImage(getSprites[activeMap.Npcs[npcId].Sprite], (npc_width * npcDir) + (activeMap.Npcs[npcId].animFrame * npc_width), 0, npc_width, npc_height,
+                           (npcX - (npcScale_w / 2)), 
+                           (npcY - (npcScale_h / 2) - npcOffset),
+                           npcScale_w, npcScale_h);
+
+    }
+  }
+  
         
   //////////////////////////
   //   DRAW ABOVE PLAYER  //
@@ -105,7 +132,7 @@ function loop() {
       tile_y = Math.floor(y * scaled_size - viewport.y + height * 0.5 - viewport.h * 0.5);
       if (valueX + valueY > 0) {
         gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
-      }            
+      }
       // Draw Collision Tiles
       if (worldColliders === true && mapEditorState != "Closed") {
         if (activeMap.Collisions[y * max_map_Y + x].up === "True") {
@@ -120,11 +147,17 @@ function loop() {
         if (activeMap.Collisions[y * max_map_Y + x].right === "True") {
           gameScreen.drawImage(collider_tile, 96, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
         }
-      }            
+      }
+      // Draw Npc Spawners
+      if (mapEditorState != "Closed") {
+        if (activeMap.NpcSpawn[y * max_map_Y + x].npcID != null) {
+          gameScreen.drawImage(collider_tile, 128, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        }
+      }
       // Draw Grid Lines
       if (worldGrid === true && mapEditorState != "Closed") {
         gameScreen.strokeRect(tile_x,tile_y,scaled_size,scaled_size);
-      }            
+      }
     }
   }
         
@@ -153,6 +186,11 @@ function loop() {
   if (player.x >= viewport.w * 0.5 && player.x <= (scaled_size * max_map_X) - viewport.w * 0.5) {
     viewport.scrollToX(player.x);
   }
+  
+  //////////////////////////////////
+  //   Update the AI Controller   //
+  //////////////////////////////////
+  aiController();
   
   ///////////////////////////////////////
   //   Draw The Next Animation Frame   //

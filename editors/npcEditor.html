@@ -50,7 +50,8 @@
       let npcName = document.getElementById("npcName").value;
       let npcSprite = document.getElementById("npcSprite").value;
       setNpc(selectedNpc, npcName, npcSprite);
-      generateNPCDropDown(); // Update the editor drop-down
+      generateNPCDropDown(); // Update the npcEditor drop-down
+      generateMapNPCDropDown(); // Update the mapEditor drop-down
       $('#npcEditorSelect option[value='+selectedNpc+']').attr('selected','selected'); // reset dropdown default to current npc in editor
       npcEditMode = false;    
     }

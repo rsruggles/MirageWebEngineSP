@@ -18,7 +18,7 @@ function setAnimDir() {
  }
 }
 
-// Animation Frame Controller
+// Player Animation Frame Controller
 function setAnimStep() {
  if (player.AnimStep === 0) {
    player.AnimStep = -1;
@@ -27,6 +27,17 @@ function setAnimStep() {
  } else if (player.AnimStep === 1) {
    player.AnimStep = 0;
  }
+}
+
+// NPC Animation Frame Controller
+function setNpcAnimFrame(npcId) {
+  if (activeMap.Npcs[npcId].animFrame === 0) {
+    activeMap.Npcs[npcId].animFrame = -1;
+  } else if (activeMap.Npcs[npcId].animFrame === -1) {
+    activeMap.Npcs[npcId].animFrame = 1;
+  } else if (activeMap.Npcs[npcId].animFrame === 1) {
+    activeMap.Npcs[npcId].animFrame = 0;
+  }
 }
       
 ////////////////////////////////////
@@ -39,6 +50,21 @@ setInterval(function(){
     player.AnimStep = 0;
   }
 },1000/8.5);
+
+/////////////////////////////////
+//   Main NPC Animation Loop   //
+/////////////////////////////////
+setInterval(function(){
+  // Loop Through All Map Npcs
+  for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
+    if (activeMap.Npcs[npcId] === undefined) { break; }
+    if (activeMap.Npcs[npcId].isMoving === true) {
+      setNpcAnimFrame(npcId);
+    } else {
+      activeMap.Npcs[npcId].animFrame = 0;
+    }
+  }
+},1000/9.25);
 
 //////////////////////////////////
 //   Map Tiles Animation Loop   //

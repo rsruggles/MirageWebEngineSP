@@ -3,8 +3,8 @@
 /////////////////////////////////
 
 // Player Variables
-var walkSpeed = 2;
-var runSpeed = 3;
+var walkSpeed = 1;
+var runSpeed = 1.5;
 var playerSprite = 0;  // Move to Player Model in the future
 
 // Define Player
@@ -168,6 +168,7 @@ var mapEditorState = "Closed";
 var mapEditorWinLoc = [0,0];
 var mapEditorLayer = "Ground";
 var mapCollider = ["True", "True", "True", "True"];
+var mapNpcID = 0;
 var mapAnimation = [0, 0, 0, 0];
 var mapAnimFrame = false;   
 var brush_Coord_X = 0;
@@ -185,8 +186,8 @@ var maxWorldMaps = 25;
 var activeMap = 0;
 var tile_size = 32;
 var scaled_size = 96;      
-var max_map_X = 255; // Game doesn't behave if these values aren't equal. Why?
-var max_map_Y = 255; // Game doesn't behave if these values aren't equal. Why?
+var max_map_X = 50; // Game doesn't behave if these values aren't equal. Why?
+var max_map_Y = 50; // Game doesn't behave if these values aren't equal. Why?
       
 // mapTile Blueprint (ground, mask, mask2, fringe, fringe 2)   
 function mapTile(posX, posY) {
@@ -210,6 +211,13 @@ function mapCollision(posX, posY, up, down, left, right) {
   this.down = down;
   this.left = left;
   this.right = right;
+}
+
+// npcSpawnTiles Blueprin (Npc Spawns)
+function mapNpcSpawn(posX, posY, npcID) {
+  this.PosX = posX;
+  this.PosY = posY;
+  this.npcID = npcID;
 }
 
 // Generate Empty Ground Layer
@@ -303,28 +311,38 @@ function setCollision() {
   return Collisions;
 }
 
-// Empty Map Blueprint
-//var Map = {
-//  Name: "Starting Map",
-//  Moral: "PvP",
-//  BootMap: "1",
-//  BootX: "1",
-//  BootY: "1",
-//  Ground : setGround(),
-//  Animation: setAnimation(),
-//  Mask: setMask(),
-//  Mask2: setMask2(),
-//  Fringe: setFringe(),
-//  Fringe2: setFringe2(),
-//  Collisions: setCollision()
-//};
+// Generate Empty NpcSpawns Layer
+function setNpcSpawn() {
+  var NpcSpawns = [];
+  var x, y;
+  for (x = 0; x < max_map_X; x++) {
+    for (y = 0; y < max_map_Y; y++) {
+      var NpcSpawn = new mapNpcSpawn(0, 0, null); // Fill NpcSpawns with void
+      NpcSpawns.push(NpcSpawn);
+    } 
+  }
+  return NpcSpawns;
+}
 
+// Push Unique Npc to Map.Npcs
+function mapNpc(npcID, x, y, direction, isMoving, animFrame) {
+  this.Name = Npcs[npcID].name;
+  this.Sprite = Npcs[npcID].sprite;
+  this.X = x;
+  this.Y = y;
+  this.Direction = direction;
+  this.isMoving = isMoving;
+  this.animFrame = animFrame;
+}
+
+// Empty Map Blutprint
 function Map(Name, Moral, BootMap, BootX, BootY) {
   this.Name = Name;
   this.Moral = Moral;
   this.BootMap = BootMap;
   this.BootX = BootX;
   this.BootY = BootY;
+  this.Npcs = [];
   this.Ground = setGround();
   this.Animation = setAnimation();
   this.Mask = setMask();
@@ -332,6 +350,7 @@ function Map(Name, Moral, BootMap, BootX, BootY) {
   this.Fringe = setFringe();
   this.Fringe2 = setFringe2();
   this.Collisions = setCollision();
+  this.NpcSpawn = setNpcSpawn();
 }
 
 // Generate worldMaps Array
