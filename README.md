@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Language: JavaScript, HTML
 * Dependencies: jQuery, jQueryUI
-* Version: ac-0.1.4
+* Version: ac-0.1.5
 
 ### Mostly Complete Features:
 
@@ -60,6 +60,10 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Var Map has been replaced with worldMaps (array). Introduced new variables: maxMaps (25 by default), and activeMap (set by function setActiveMap) used for interacting with only the map the player is currently on.
 * /warptomap # (0-25) command has been introduced. This is used for convenience of switching maps on the fly, and in general to demonstrate that more then one map can exist at a time.
+
+### What's new in version ac-0.1.5
+
+* Introduced basic NPC AI. Npcs will now wander around the map without restriction (They can wander off the map in any direction, and have no collision logic).
 
 
 ### Authors
