@@ -1,3 +1,6 @@
+////////////////////////////
+//   Main AI Controller   //
+////////////////////////////
 function aiController() {
   // Loop Through All Map Npcs
   for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
@@ -16,41 +19,16 @@ function aiController() {
     if (npcX > (player.x - losX) && npcX < (player.x + losX) &&
         npcY > (player.y - losY) && npcY < (player.y + losY)) {
       
-      // Should we start or stop moving?
-      let movChange = Math.floor(Math.random() * 1000) + 1;
-      if (movChange <= 10) {
-        if (activeMap.Npcs[npcId].isMoving === false) {
-          activeMap.Npcs[npcId].isMoving = true;
-        } else {
-          activeMap.Npcs[npcId].isMoving = false;
-        }
+      // Move Based on Npc's Type
+      switch (activeMap.Npcs[npcId].Type) {
+        case "Wander":
+          npcTypeWander(npcId);
+          break;
+        case "AoS":
+          npcTypeAoS(npcId);
+          break;
       }
       
-      // Should we change directions?
-      if (activeMap.Npcs[npcId].isMoving === true) {
-        let dirChange = Math.floor(Math.random() * 1000) + 1;
-        if (dirChange <= 5) { // Change Direction 20% of the time
-
-          let moveDir = Math.floor(Math.random() * 4);
-
-          switch(moveDir) {
-            case 0: // Up
-              activeMap.Npcs[npcId].Direction = 1;
-              break;
-            case 1: // Down
-              activeMap.Npcs[npcId].Direction = 4;
-              break;
-            case 2: // Left
-              activeMap.Npcs[npcId].Direction = 7;
-              break;
-            case 3: // Right
-              activeMap.Npcs[npcId].Direction = 10;
-              break;
-          }
-        }
-      }
-            
-      //let moveDir = Math.floor(Math.random() * 4);
       if (activeMap.Npcs[npcId].isMoving === true) {
         switch(activeMap.Npcs[npcId].Direction) {
           case 1: // Up
@@ -66,13 +44,71 @@ function aiController() {
             activeMap.Npcs[npcId].X += walkSpeed;
             break;
         }
-      }
-      
-      
+      }      
         
-    }
-    
-    
-    
+    }  
   }
+}
+
+///////////////////////////
+//   Wander Type Logic   //
+///////////////////////////
+function npcTypeWander(npcId) {
+  // Should we start or stop moving?
+  let movChange = Math.floor(Math.random() * 1000) + 1;
+  if (movChange <= 10) { // Start/Stop 0.01% of the time
+    if (activeMap.Npcs[npcId].isMoving === false) {
+      activeMap.Npcs[npcId].isMoving = true;
+    } else {
+      activeMap.Npcs[npcId].isMoving = false;
+    }
+  }
+      
+  // Should we change directions?
+  if (activeMap.Npcs[npcId].isMoving === true) {
+    let dirChange = Math.floor(Math.random() * 1000) + 1;
+    if (dirChange <= 5) { // Change Direction 0.005% of the time
+
+      let moveDir = Math.floor(Math.random() * 4);
+
+      switch(moveDir) {
+        case 0: // Up
+          activeMap.Npcs[npcId].Direction = 1;
+          break;
+        case 1: // Down
+          activeMap.Npcs[npcId].Direction = 4;
+          break;
+        case 2: // Left
+          activeMap.Npcs[npcId].Direction = 7;
+          break;
+        case 3: // Right
+          activeMap.Npcs[npcId].Direction = 10;
+          break;
+      }
+    }
+  }
+}
+
+///////////////////////////////
+//   Attack on Sight Logic   //
+///////////////////////////////
+function npcTypeAoS(npcId) {
+  // Calculate X/Y axis difference
+  let xDiff = Math.abs(activeMap.Npcs[npcId].X - player.x);
+  let yDiff = Math.abs(activeMap.Npcs[npcId].Y - player.y);
+            
+  if (xDiff > yDiff) {
+    if (Math.sign(activeMap.Npcs[npcId].X - player.x) === -1) {
+      activeMap.Npcs[npcId].Direction = 10; // Right
+    } else {
+      activeMap.Npcs[npcId].Direction = 7; // Left
+    }
+  } else {
+    if (Math.sign(activeMap.Npcs[npcId].Y - player.y) === -1) {
+      activeMap.Npcs[npcId].Direction = 4; // Down
+    } else {
+      activeMap.Npcs[npcId].Direction = 1; // Up
+    }
+  }
+  activeMap.Npcs[npcId].isMoving = true;
 }

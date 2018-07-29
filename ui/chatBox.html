@@ -40,7 +40,7 @@
         chatInput.value = "";
       } else if (chatMsg == "/npceditor") {
         $("#npcEditor").show();
-        //mapEditorState = "Max";
+        npcEditorState = "Max";
         chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
         $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
         chatInput.value = "";

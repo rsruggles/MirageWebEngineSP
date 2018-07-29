@@ -3,4 +3,4 @@
    ////////////////// */ 
 #npcEditor * {-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
 #npcEditor {position: absolute; display: none; width: auto; z-index: 2; left: 317px; top: 20px; background-color: #f1f1f1;
-            font-family: monospace; border: 2px solid #1764b2; border-radius: 10px 10px 0 0; overflow-y: hidden;}
+            font-family: monospace; border: 2px solid #1764b2; border-radius: 10px 10px 0 0; overflow-y: hidden; width: 220px; height: 320px;}

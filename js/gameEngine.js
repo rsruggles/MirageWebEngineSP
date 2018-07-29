@@ -129,21 +129,22 @@ var maxNpcs = 100;
 var Npcs = new Array();
 
 // Create Npc Blueprint
-function Npc(name, sprite) {
+function Npc(name, sprite, npcType) {
   this.name = name;
   this.sprite = sprite;
+  this.type = npcType;
 }
 
 // Create New Unique Npc
-function setNpc(id, name, sprite) {
-  Npcs[id] = new Npc(name, sprite);
+function setNpc(id, name, sprite, npcType) {
+  Npcs[id] = new Npc(name, sprite, npcType);
 }
 
 // Populate Blank Npcs
 function loadNpcs() {
   let id = 0;
   for (id = 0; id < maxNpcs; id++) {
-    let npc = new Npc("", 0); // Populate the Nps array with empty Npcs
+    let npc = new Npc("", 0, "Wander"); // Populate the Npcs array with empty Npcs
     Npcs.push(npc);
   }
 }
@@ -156,6 +157,16 @@ loadNpcs(); // In the future we'll only load blank Npcs if
 //   General UI Variables   //
 ////////////////////////////// 
 var chatBoxOpened = false;
+var editorsMinimized = 0;
+
+
+
+////////////////////////////////
+//   npcEditor UI Variables   //
+////////////////////////////////
+var npcEditorWinLoc = [20,317,220,320];
+var npcEditorState = "Closed"; 
+var npcEditMode = false;
 
 
 
@@ -165,7 +176,7 @@ var chatBoxOpened = false;
 var worldGrid = true;
 var worldColliders = true;
 var mapEditorState = "Closed";
-var mapEditorWinLoc = [0,0];
+var mapEditorWinLoc = [];
 var mapEditorLayer = "Ground";
 var mapCollider = ["True", "True", "True", "True"];
 var mapNpcID = 0;
@@ -213,7 +224,7 @@ function mapCollision(posX, posY, up, down, left, right) {
   this.right = right;
 }
 
-// npcSpawnTiles Blueprin (Npc Spawns)
+// npcSpawnTiles Blueprint (Npc Spawns)
 function mapNpcSpawn(posX, posY, npcID) {
   this.PosX = posX;
   this.PosY = posY;
@@ -328,6 +339,7 @@ function setNpcSpawn() {
 function mapNpc(npcID, x, y, direction, isMoving, animFrame) {
   this.Name = Npcs[npcID].name;
   this.Sprite = Npcs[npcID].sprite;
+  this.Type = Npcs[npcID].type;
   this.X = x;
   this.Y = y;
   this.Direction = direction;
@@ -396,12 +408,10 @@ var viewport = new ViewPort(0,0,width,height);
       
 // Initialize Tilesheet
 var tile_sheet = new Image();
-//tile_sheet.addEventListener("load", (event) => {loop();});
 tile_sheet.src = "img/tilesets/1.png";
 
 // Initialize ColliderSheet
 var collider_tile = new Image();
-//collider_tile.addEventListener("load", (event) => {loop();});
 collider_tile.src = "img/editors/editor-tiles.png";
 
 // Initialize SpriteSheets

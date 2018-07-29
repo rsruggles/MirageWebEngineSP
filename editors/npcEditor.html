@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<div class="ui-widget-header editorBar">
+<div id="npcEditorBar" class="ui-widget-header editorBar">
   <span>
     <strong>&nbsp;NPC Editor</strong>
-    <strong id="mapEditorX" class="fRight boxed" style="background-color: #ce8484;">X</strong>
-    <strong id="mapEditor-" class="fRight boxed" style="background-color: #1698bc;">_</strong>
+    <strong id="npcEditorX" class="fRight boxed" style="background-color: #ce8484;">X</strong>
+    <strong id="npcEditor-" class="fRight boxed" style="background-color: #1698bc;">_</strong>
   </span>
 </div>
 <div id="npcEditorBody" style="width: auto;">
   <form class="pad">
+    <span>Select an Npc:</span><br />
     <select id="npcEditorSelect"></select>
   </form>
   <form class="pad">
-    <span id="npcID">ID: 1</span>
-    <br /><br />
     <span>Name: </span><br />
     <input id="npcName" class="p100" type="text" placeholder="Null" disabled>
     <br /><br />
     <span>Sprite: </span><br />
     <input id="npcSprite" class="p100" type="number" placeholder="0" disabled>
+    <br /><br />
+    <span>Logic Type: </span><br />
+    <select id="npcType" disabled>
+      <option value="Wander">Wander (Friendly)</option>
+      <option value="AoS">Attack on Sight</option>
+    </select>
   </form>
   <br />
   <form>
@@ -31,9 +36,6 @@
 </div>
 
 <script>
-  // Editor MODE Vars
-  var npcEditMode = false;
-  
   // Edit The NPC
   document.getElementById("editNPC").addEventListener("click", function(event){
     event.preventDefault();
@@ -41,15 +43,18 @@
     if (npcEditMode == false) {
       $('#npcName').removeAttr('disabled');
       $('#npcSprite').removeAttr('disabled');
+      $('#npcType').removeAttr('disabled');
       $('#editNPC').html("Save");
       npcEditMode = true;
     } else {
       $('#npcName').attr({'disabled': 'disabled'});
       $('#npcSprite').attr({'disabled': 'disabled'});
+      $('#npcType').attr({'disabled': 'disabled'});
       $('#editNPC').html("Edit");
       let npcName = document.getElementById("npcName").value;
       let npcSprite = document.getElementById("npcSprite").value;
-      setNpc(selectedNpc, npcName, npcSprite);
+      let npcType = document.getElementById("npcType").value;
+      setNpc(selectedNpc, npcName, npcSprite,npcType);
       generateNPCDropDown(); // Update the npcEditor drop-down
       generateMapNPCDropDown(); // Update the mapEditor drop-down
       $('#npcEditorSelect option[value='+selectedNpc+']').attr('selected','selected'); // reset dropdown default to current npc in editor
@@ -61,8 +66,6 @@
   var selectedNpc = 0;
   $('#npcEditorSelect').on('change', function() {
     selectedNpc = Number(this.value);
-    let laymenNPC = selectedNpc + 1; // For visual effect. Npc range is 0-99 but shown as 1-100
-    $('#npcID').html("ID: " + laymenNPC);
     $('#npcName').val(Npcs[selectedNpc].name);
     $('#npcSprite').val(Npcs[selectedNpc].sprite);
   });
@@ -70,7 +73,12 @@
   // Make Draggable
   $( function() {
     $("#npcEditor").draggable({ handle: ".ui-widget-header", containment: "#gameScreen", scroll: false, snap: ".snapUI" });
-  } );     
+  } );
+  
+  // Update Npc Type
+  $('#npcType').on('change', function() {
+    mapNpcType = this.value;
+  });
   
   // Generate The Dropdown
   function generateNPCDropDown() {
@@ -83,11 +91,60 @@
         npcName = "Empty NPC Slot";
       }
       npcOptHTML += '<option value="' + i + '">' + (i+1) + ' ' + npcName + '</option>';
-      //console.log(Npcs[i].sprite + i);
     }
     npcEditorSelect.innerHTML = npcOptHTML;
   }
   generateNPCDropDown();
   
-  // Edit Selected
+  // Calculate Screen Position After Dragging
+  $("#npcEditorBar").mouseup(function(e) {
+    if($(e.target).is("#npcEditor-")) return;
+    var npEditor = $("#npcEditor");
+    var position = npEditor.position();
+    npcEditorWinLoc[0] = position.top;
+    npcEditorWinLoc[1] = position.left;
+  });
+  
+  // Closing the Npc Editor
+  $("#npcEditorX").click(function() {
+    // Index Minimzed Editors
+    if (npcEditorState === "Min") {
+      editorsMinimized = editorsMinimized - 1;
+    }
+    // Close it
+    npcEditorState = "Closed";
+    $("#npcEditor").hide();
+  });
+  
+  // Minimize the Npc Editor
+  $("#npcEditor-").click(function() {
+    if (npcEditorState == "Max") {
+      npcEditorState = "Min";
+      
+      document.getElementById("npcEditor-").innerHTML = "+";
+      
+      var top = window.height - 34;
+      $('#npcEditor').animate({
+        top: top,
+        left: (250 * editorsMinimized),
+        width: '250px',
+        height: 34
+      });
+      editorsMinimized = editorsMinimized + 1;
+        
+    } else {
+      npcEditorState = "Max";
+      editorsMinimized = editorsMinimized - 1;
+
+      $('#npcEditor').animate({
+        top: npcEditorWinLoc[0],
+        left: npcEditorWinLoc[1],
+        width: npcEditorWinLoc[2] + "px",
+        height: npcEditorWinLoc[3] + "px"
+      });
+      document.getElementById("npcEditor-").innerHTML = "_";
+    }
+  });
+  
+  
 </script>

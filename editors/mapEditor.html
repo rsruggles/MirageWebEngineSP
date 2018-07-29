@@ -1,4 +1,4 @@
-<div class="ui-widget-header editorBar">
+<div id="mapEditorBar" class="ui-widget-header editorBar">
   <span>
     <strong>&nbsp;Map Editor</strong>
     <strong id="mapEditorX" class="fRight boxed" style="background-color: #ce8484;">X</strong>
@@ -153,7 +153,7 @@
   });
   
   // Calculate Screen Position After Dragging
-  $(".editorBar").mouseup(function(e) {
+  $("#mapEditorBar").mouseup(function(e) {
     if($(e.target).is("#mapEditor-")) return;
     var mpEditor = $("#mapEditor");
     var position = mpEditor.position();
@@ -186,28 +186,36 @@
   }      
   document.getElementById("Layers").style.display = "block";
   
-  
+  // Closing the Map Editor
   $("#mapEditorX").click(function() {
+    // Index Minimzed Editors
+    if (mapEditorState === "Min") {
+      editorsMinimized = editorsMinimized - 1;
+    }
+    // Close It
     mapEditorState = "Closed";
     $("#mapEditor").hide();
   });
-      
+  
+  // Minimizing the Map Editor
   $("#mapEditor-").click(function() {
     if (mapEditorState == "Max") {
       mapEditorState = "Min";
-
+      
       document.getElementById("mapEditor-").innerHTML = "+";
       
       var top = window.height - 34;
       $('#mapEditor').animate({
         top: top,
-        left: 0,
+        left: (250 * editorsMinimized),
         width: '250px',
         height: 34
       });
+      editorsMinimized = editorsMinimized + 1;
         
     } else {
       mapEditorState = "Max";
+      editorsMinimized = editorsMinimized - 1;
 
       $('#mapEditor').animate({
         top: editorTop,

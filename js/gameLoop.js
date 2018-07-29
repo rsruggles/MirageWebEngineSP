@@ -25,9 +25,6 @@ function loop() {
   if(y_min < 0) y_min = 0;
   if(x_max > max_map_X) x_max = max_map_X;
   if(y_max > max_map_Y) y_max = max_map_Y;
-      
-  // Set the active map
-  //setActiveMap(player.worldMap);
   
   ///////////////////////////
   //   DRAW BELOW PLAYER   //
