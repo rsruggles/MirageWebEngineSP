@@ -96,19 +96,31 @@ function npcTypeAoS(npcId) {
   // Calculate X/Y axis difference
   let xDiff = Math.abs(activeMap.Npcs[npcId].X - player.x);
   let yDiff = Math.abs(activeMap.Npcs[npcId].Y - player.y);
-            
-  if (xDiff > yDiff) {
-    if (Math.sign(activeMap.Npcs[npcId].X - player.x) === -1) {
-      activeMap.Npcs[npcId].Direction = 10; // Right
+  // Add a little random difference when
+  // X/Y axis difference are similar
+  let axisDiff = Math.abs(xDiff - yDiff);
+  let rndDiff = (Math.floor(Math.random() * (scaled_size / 2)) + 1) + (scaled_size / 2);
+
+  // Only change direction when the axis difference.
+  // is greater than the random difference.
+  if (axisDiff >= rndDiff) {
+    // Chase Player on X Axis
+    if (xDiff > yDiff) {
+      if (Math.sign(activeMap.Npcs[npcId].X - player.x) === -1) {
+        activeMap.Npcs[npcId].Direction = 10; // Right
+      } else {
+        activeMap.Npcs[npcId].Direction = 7; // Left
+      }
+    // Chase Player on Y Axis
     } else {
-      activeMap.Npcs[npcId].Direction = 7; // Left
-    }
-  } else {
-    if (Math.sign(activeMap.Npcs[npcId].Y - player.y) === -1) {
-      activeMap.Npcs[npcId].Direction = 4; // Down
-    } else {
-      activeMap.Npcs[npcId].Direction = 1; // Up
-    }
+      if (Math.sign(activeMap.Npcs[npcId].Y - player.y) === -1) {
+        activeMap.Npcs[npcId].Direction = 4; // Down
+      } else {
+        activeMap.Npcs[npcId].Direction = 1; // Up
+      }
+    }    
   }
+  
+  // Cycle the walking animation
   activeMap.Npcs[npcId].isMoving = true;
 }

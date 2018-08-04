@@ -336,7 +336,7 @@ function setNpcSpawn() {
 }
 
 // Push Unique Npc to Map.Npcs
-function mapNpc(npcID, x, y, direction, isMoving, animFrame) {
+function mapNpc(npcID, x, y, direction, isMoving, animFrame, stepCounter) {
   this.Name = Npcs[npcID].name;
   this.Sprite = Npcs[npcID].sprite;
   this.Type = Npcs[npcID].type;
@@ -345,6 +345,7 @@ function mapNpc(npcID, x, y, direction, isMoving, animFrame) {
   this.Direction = direction;
   this.isMoving = isMoving;
   this.animFrame = animFrame;
+  this.stepCounter = stepCounter;
 }
 
 // Empty Map Blutprint
