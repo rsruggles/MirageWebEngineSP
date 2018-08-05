@@ -193,5 +193,4 @@ function loop() {
   //   Draw The Next Animation Frame   //
   ///////////////////////////////////////
   window.requestAnimationFrame(loop);
-    
 }

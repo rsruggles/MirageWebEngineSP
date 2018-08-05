@@ -32,16 +32,24 @@ function aiController() {
       if (activeMap.Npcs[npcId].isMoving === true) {
         switch(activeMap.Npcs[npcId].Direction) {
           case 1: // Up
-            activeMap.Npcs[npcId].Y -= walkSpeed;
+            if (!isBlockedByPlayer(npcId)) {
+              activeMap.Npcs[npcId].Y -= walkSpeed;
+            }
             break;
           case 4: // Down
-            activeMap.Npcs[npcId].Y += walkSpeed;
+            if (!isBlockedByPlayer(npcId)) {
+              activeMap.Npcs[npcId].Y += walkSpeed;
+            }
             break;
           case 7: // Left
-            activeMap.Npcs[npcId].X -= walkSpeed;
+            if (!isBlockedByPlayer(npcId)) {
+              activeMap.Npcs[npcId].X -= walkSpeed;
+            }
             break;
           case 10: // Right
-            activeMap.Npcs[npcId].X += walkSpeed;
+            if (!isBlockedByPlayer(npcId)) {
+              activeMap.Npcs[npcId].X += walkSpeed;
+            }
             break;
         }
       }      
@@ -121,6 +129,69 @@ function npcTypeAoS(npcId) {
     }    
   }
   
-  // Cycle the walking animation
-  activeMap.Npcs[npcId].isMoving = true;
+  // Check if we need to start moving again
+  if (xDiff > scaled_size || yDiff > scaled_size) {
+    activeMap.Npcs[npcId].isMoving = true;
+  }
+}
+
+//////////////////////////////////
+//   Is Npc Blocked By Player   //
+//////////////////////////////////
+function isBlockedByPlayer(npcId) {  
+  let npcX = activeMap.Npcs[npcId].X;
+  let npcY = activeMap.Npcs[npcId].Y;
+  var isBlocked = false;
+  
+  switch(activeMap.Npcs[npcId].Direction) {
+    case 10: // While Moving Right
+      if ((npcX + (scaled_size + 1)) >= player.x) {
+        if (npcY < player.y + (scaled_size) && npcY > player.y - (scaled_size)) {
+          if (Math.abs(npcX - player.x) <= scaled_size) {
+            activeMap.Npcs[npcId].isMoving = false;
+            isBlocked = true;
+          } else {
+            activeMap.Npcs[npcId].isMoving = true;
+          }
+        }
+      }
+      break;
+    case 7: // While Moving Left
+      if ((npcX - (scaled_size + 1)) <= player.x) {
+        if (npcY < player.y + (scaled_size) && npcY > player.y - (scaled_size)) {
+          if (Math.abs(npcX - player.x) <= scaled_size) {
+            activeMap.Npcs[npcId].isMoving = false;
+            isBlocked = true;
+          } else {
+            activeMap.Npcs[npcId].isMoving = true;
+          }
+        }
+      }
+      break;
+    case 4: // While Moving Down
+      if ((npcY + (scaled_size)) >= player.y) {
+          if (npcX < player.x + (scaled_size) && npcX > player.x - (scaled_size)) {
+            if (Math.abs(npcY - player.y) <= scaled_size) {
+              activeMap.Npcs[npcId].isMoving = false;
+              isBlocked = true;
+            } else {
+              activeMap.Npcs[npcId].isMoving = true;
+            }
+          }
+        }
+      break;
+    case 1: // While Moving Up
+      if ((npcY - (scaled_size)) <= player.y) {
+          if (npcX < player.x + (scaled_size) && npcX > player.x - (scaled_size)) {
+            if (Math.abs(npcY - player.y) <= scaled_size) {
+              activeMap.Npcs[npcId].isMoving = false;
+              isBlocked = true;
+            } else {
+              activeMap.Npcs[npcId].isMoving = true;
+            }
+          }
+        }
+  }
+    
+  return isBlocked;
 }
