@@ -43,7 +43,12 @@ Player.prototype = {
         player.isMoving = false;
         this.x -= (x);
       } else {
-        this.x += (x);
+        if (isBlockedByNpc()) {
+          player.isMoving = false;
+          this.x -= (x);
+        } else {
+          this.x += (x);
+        }
       }
     } else if (player.Dir === "Left") {
       //let PlayerLoc = getPlayerTileCoord(this.x - (scaled_size * 0.5), this.y);
@@ -58,7 +63,12 @@ Player.prototype = {
         player.isMoving = false;
         this.x += (x);
       } else {
-        this.x -= (x);
+        if (isBlockedByNpc()) {
+          player.isMoving = false;
+          this.x += (x);
+        } else {
+          this.x -= (x);
+        }
       }
     }         
   },
@@ -76,7 +86,12 @@ Player.prototype = {
         this.y += (y);
         player.isMoving = false;
       } else {
-        this.y -= (y);
+        if (isBlockedByNpc()) {
+          player.isMoving = false;
+          this.y += (y);
+        } else {
+          this.y -= (y);
+        }
       }
     } else if (player.Dir === "Down") {
       //let PlayerLoc = getPlayerTileCoord(this.x, this.y + (scaled_size * 0.5));
@@ -91,11 +106,67 @@ Player.prototype = {
         this.y -= (y);
         player.isMoving = false;
       } else {
-        this.y += (y);
+        if (isBlockedByNpc()) {
+          player.isMoving = false;
+          this.y -= (y);
+        } else {
+          this.y += (y);
+        }
       }
     }
   }
 };
+
+
+// Check for collision with NPC
+function isBlockedByNpc () {  
+  var isBlocked = false;  
+  for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
+  if (activeMap.Npcs[npcId] === undefined) { break; }
+    let npcX = activeMap.Npcs[npcId].X;
+    let npcY = activeMap.Npcs[npcId].Y;
+    
+    switch(player.Dir) {
+      case "Right":
+        if ((player.x + scaled_size) >= npcX) {
+          if (player.y < npcY + (scaled_size) && player.y > npcY - (scaled_size)) {
+            if (Math.abs(player.x - npcX) <= scaled_size) {
+              isBlocked = true;
+            }
+          }
+        }
+        break;
+      case "Left":
+        if ((player.x - scaled_size) <= npcX) {
+          if (player.y < npcY + (scaled_size) && player.y > npcY - (scaled_size)) {
+            if (Math.abs(player.x - npcX) <= scaled_size) {
+              isBlocked = true;
+            }
+          }
+        }
+        break;
+      case "Up":
+        if ((player.y - (scaled_size)) <= npcY) {
+          if (player.x < npcX + (scaled_size) && player.x > npcX - (scaled_size)) {
+            if (Math.abs(player.y - npcY) <= scaled_size) {
+              isBlocked = true;
+            }
+          }
+        }
+        break;
+      case "Down":
+        if ((player.y + (scaled_size)) >= npcY) {
+          if (player.x < npcX + (scaled_size) && player.x > npcX - (scaled_size)) {
+            if (Math.abs(player.y - npcY) <= scaled_size) {
+              isBlocked = true;
+            }
+          }
+        }
+        break;
+    }    
+  }
+  return isBlocked;
+}
 
 
 

@@ -163,12 +163,12 @@ function loop() {
   //////////////////////////////////
   if (player.isMoving === true) {
     if (player.Dir === "Right" || player.Dir === "Left") {
-      if (player.isMoving == true) {
+      if (player.isMoving === true) {
         player.moveX(player.Speed);
       }            
     }
     if (player.Dir === "Up" || player.Dir === "Down") {
-      if (player.isMoving == true) {
+      if (player.isMoving === true) {
         player.moveY(player.Speed);
       }     
     }
