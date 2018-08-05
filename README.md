@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Language: JavaScript, HTML
 * Dependencies: jQuery, jQueryUI
-* Version: ac-0.1.5
+* Version: ac-0.1.6
 
 ### Mostly Complete Features:
 
@@ -64,6 +64,14 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 ### What's new in version ac-0.1.5
 
 * Introduced basic NPC AI. Npcs will now wander around the map without restriction (They can wander off the map in any direction, and have no collision logic).
+
+### What's new in version ac-0.1.6
+
+* Npc Editor can now be closed and minimized.
+* Added additional 'Attack on Sight' AI type.
+* Added AI Selector to Npc Editor (Wander / Attack on Sight).
+* Players now collide against Npcs.
+* Npcs now collide against players.
 
 
 ### Authors
