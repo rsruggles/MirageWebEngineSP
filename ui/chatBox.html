@@ -2,7 +2,7 @@
   <div id="chatContainer">
     <div id="chatText">
       <strong>Mirage Web Engine</strong><br />
-      <strong>Version: ac-0.1.6</strong><br />
+      <strong>Version: ac-0.1.7</strong><br />
       <strong>Author: </strong>Rian Ruggles<br /><br />
       
       <strong>Notes:</strong>
@@ -15,6 +15,8 @@
       <br />/mapeditor
       <br />/setsprite # (0 - 5)
       <br />/warptomap # (0 - 25)
+      <br />/savemaps
+      <br />/savenpcs
       <br /><br />
     </div>
     <input id="chatInput" type="text">
@@ -60,6 +62,16 @@
           player.worldMap = warpToMap;
           setActiveMap(player.worldMap);
         }
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
+      } else if (chatMsg == "/savemaps") {
+        saveToJson(JSON.stringify(worldMaps),"WorldMaps.json")
+        chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
+      } else if (chatMsg == "/savenpcs") {
+        saveToJson(JSON.stringify(Npcs),"WorldNpcs.json")
         chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
         $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
         chatInput.value = "";

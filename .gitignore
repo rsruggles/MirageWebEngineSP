@@ -1,1 +1,5 @@
-ignore nothing...for now
+# Exclude World Files
+world/*
+
+# Include World Folder
+!world/.gitkeep 

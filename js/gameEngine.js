@@ -45,7 +45,7 @@ Player.prototype = {
       } else {
         if (isBlockedByNpc()) {
           player.isMoving = false;
-          this.x -= (x);
+          this.x -= (x + player.Speed);
         } else {
           this.x += (x);
         }
@@ -65,7 +65,7 @@ Player.prototype = {
       } else {
         if (isBlockedByNpc()) {
           player.isMoving = false;
-          this.x += (x);
+          this.x += (x + player.Speed);
         } else {
           this.x -= (x);
         }
@@ -88,7 +88,7 @@ Player.prototype = {
       } else {
         if (isBlockedByNpc()) {
           player.isMoving = false;
-          this.y += (y);
+          this.y += (y + player.Speed);
         } else {
           this.y -= (y);
         }
@@ -108,7 +108,7 @@ Player.prototype = {
       } else {
         if (isBlockedByNpc()) {
           player.isMoving = false;
-          this.y -= (y);
+          this.y -= (y + player.Speed);
         } else {
           this.y += (y);
         }
@@ -211,16 +211,26 @@ function setNpc(id, name, sprite, npcType) {
   Npcs[id] = new Npc(name, sprite, npcType);
 }
 
-// Populate Blank Npcs
-function loadNpcs() {
+
+
+/////////////////////////
+//   Load World Npcs   //
+/////////////////////////
+try {
+  // Check for local WorldNpcs.json
+  var request = new XMLHttpRequest();
+  request.open("GET", "world/WorldNpcs.json", false);
+  request.send(null)
+  var WorldNpcsBuffer = JSON.parse(request.responseText);
+  Npcs = WorldNpcsBuffer;
+} catch(err) {
+  // Generate Blank WorldNpcs
   let id = 0;
   for (id = 0; id < maxNpcs; id++) {
     let npc = new Npc("", 0, "Wander"); // Populate the Npcs array with empty Npcs
     Npcs.push(npc);
   }
 }
-loadNpcs(); // In the future we'll only load blank Npcs if
-            // there aren't any Npcs saved in the database
 
 
 
@@ -437,16 +447,24 @@ function Map(Name, Moral, BootMap, BootX, BootY) {
   this.NpcSpawn = setNpcSpawn();
 }
 
-// Generate worldMaps Array
-function generateWorldMaps() {
+/////////////////////////
+//   Load World Maps   //
+/////////////////////////
+try {
+  // Check for local WorldMaps.json
+  var request = new XMLHttpRequest();
+  request.open("GET", "world/WorldMaps.json", false);
+  request.send(null)
+  var WorldMapsBuffer = JSON.parse(request.responseText);
+  worldMaps = WorldMapsBuffer;
+} catch(err) {
+  // Generate Blank WorldMaps
   var id;
   for (id = 0; id < maxWorldMaps; id++) {
-    //worldMaps[id] = Map;
     var thisMap = new Map("", "PvP", 0, 0, 0);
     worldMaps.push(thisMap);
   }
 }
-generateWorldMaps();
 
 // Set Active Map
 function setActiveMap(mapID) {

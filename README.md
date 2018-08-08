@@ -73,6 +73,12 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 * Players now collide against Npcs.
 * Npcs now collide against players.
 
+### What's new in version ac-0.1.7
+
+* Implemented two new console commands for saving your maps and npcs!
+* **/savemaps** Generates a downloadable file, WorldMaps.json, that you can place in your project's "world" folder.
+* **/savenpcs** Generates a downloadable file, WorldNpcs.json, that you can place in your project's "world" folder.
+
 
 ### Authors
 
