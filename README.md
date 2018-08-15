@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Language: JavaScript, HTML
 * Dependencies: jQuery, jQueryUI
-* Version: ac-0.1.6
+* Version: ac-0.1.7
 
 ### Mostly Complete Features:
 
@@ -25,10 +25,9 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 ### Known Bugs / Incomplete Features:
 
-* NPC editor is pretty new and can be opened but not closed. NPCs cannot be placed into the world yet. Currently when you save an NPC it saves to every NPC slot (looking into it).
 * Engine console can be opened and closed by pressing "Enter", but is unpolished. Currently you can only close the console when the console input box has focus. So if you're having trouble closing the console, just click the input box. Needs better user experience.
 * Animation tiles work properly, however the way the editor handles animations is not very visually intuitive. See console notes in game for further explanation.
-* THERE'S NO DATABASE/OFFLINE STORAGE! Currently nothing saves permanently. Please don't spend hours creating a neat map! It's gone the moment you close the web page.
+
 
 ### Upcoming Features (todo):
 

@@ -41,12 +41,12 @@
     <div style="width: 50%; float: left; padding-left: 15px;">
       <span id="btnCollision" class="editorAttribute mar7R" style="margin-top: 0px;">Collision</span>
       <span id="btnNpcSpawn" class="editorAttribute mar7R">Npc Spawn</span>
-      <span id="btnTeleport" class="editorAttribute mar7R" disabled>Npc Avoid</span>
+      <span id="btnNpcAvoid" class="editorAttribute mar7R" disabled>Npc Avoid</span>
     </div>
     <div style="width: 50%; float: left; padding-right: 15px;">
       <span id="" class="editorAttribute mar7L" style="margin-top: 0px;">Door/Key</span>
       <span id="" class="editorAttribute mar7L" disabled>Loot Chest</span>
-      <span id="" class="editorAttribute mar7L" disabled>Teleport</span>
+      <span id="btnTeleport" class="editorAttribute mar7L" disabled>Teleport</span>
     </div>
   </div> 
   
@@ -98,6 +98,27 @@
         <span>Select a Npc to Spawn</span>
         <select id="mapNpcSelect" style="display: block; width: 100%; !important">
         </select>
+      </div>
+    </form>
+  </div>
+  
+  <div id="attTeleport" style="padding: 0 15px; display: none; max-width: 273px !important">
+    <span style="display: block; margin-bottom: 12px !important;">
+      <strong>Telport Player To: </strong>
+      <strong id="mapTeleportToggle" style="color: #1764B2; float: right; cursor: pointer;">&lt;&lt; Back</strong>
+    </span>
+    <form style="display: block;">
+      <div class="pad7R" style="width: 100%; float: left; padding-bottom: 7px">
+        <span>Map ID:</span>
+        <input id="numTelMap" value="0" style="display: block; width: 100%; !important">
+      </div>
+      <div class="pad7R" style="width: 50%; float: left;">
+        <span>Map X:</span>
+        <input id="numTelX" value="0" style="display: block; width: 100%; !important">
+      </div>
+      <div class="pad7R" style="width: 50%; float: left;">
+        <span>Map Y:</span>
+        <input id="numTelY" value="0" style="display: block; width: 100%; !important">
       </div>
     </form>
   </div>
@@ -263,12 +284,38 @@
     mapEditorLayer = "Collision";
     $("#attContainer").hide();
     $("#attCollision").show();
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnCollision").css("background-color", "#aec8e8");
   });
   
   $("#btnNpcSpawn").click(function() {
     mapEditorLayer = "NpcSpawn";
     $("#attContainer").hide();
     $("#attMapNpc").show();
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnNpcSpawn").css("background-color", "#aec8e8");
+  });
+  
+  $("#btnNpcAvoid").click(function() {
+    mapEditorLayer = "NpcAvoid";    
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnNpcAvoid").css("background-color", "#aec8e8");
+  });
+  
+  $("#btnTeleport").click(function() {
+    $("#attContainer").hide();
+    $('#attTeleport').show();
+    mapEditorLayer = "Teleport";    
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnTeleport").css("background-color", "#aec8e8");
   });
   
   $("#optWorldGrid").click(function() {
@@ -291,6 +338,23 @@
   $("#mapNpcToggle").click(function() {
     $("#attContainer").show();
     $("#attMapNpc").hide();
+  });
+  
+  $("#mapTeleportToggle").click(function() {
+    $("#attContainer").show();
+    $("#attTeleport").hide();
+  });
+  
+  $("#numTelMap").change(function() {
+    mapTelId = parseInt(this.value) || 0;
+  });
+  
+  $("#numTelX").change(function() {
+    mapTelX = parseInt(this.value) || 0;
+  });
+  
+  $("#numTelY").change(function() {
+    mapTelY = parseInt(this.value) || 0;
   });
       
   $('#collideUp').on('change', function() {
@@ -329,4 +393,12 @@
     npcEditorSelect.innerHTML = npcOptHTML;
   }
   generateMapNPCDropDown();
+  
+  // Reset Editor BtnBackgrounds
+  function resetBtnBackgrounds() {
+    $("#btnCollision").css("background-color", "#ddd");
+    $("#btnNpcSpawn").css("background-color", "#ddd");
+    $("#btnNpcAvoid").css("background-color", "#ddd");
+    $("#btnTeleport").css("background-color", "#ddd");
+  }
 </script>

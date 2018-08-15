@@ -262,7 +262,10 @@ var mapEditorLayer = "Ground";
 var mapCollider = ["True", "True", "True", "True"];
 var mapNpcID = 0;
 var mapAnimation = [0, 0, 0, 0];
-var mapAnimFrame = false;   
+var mapAnimFrame = false;
+var mapTelId = 0;
+var mapTelX = 0;
+var mapTelY = 0;
 var brush_Coord_X = 0;
 var brush_Coord_Y = 0;
 
@@ -310,6 +313,23 @@ function mapNpcSpawn(posX, posY, npcID) {
   this.PosX = posX;
   this.PosY = posY;
   this.npcID = npcID;
+}
+
+// npcAvoidTiles Blueprint (Npc Avoid)
+function mapNpcAvoid(PosX, PosY, isAvoid) {
+  this.PosX = PosX;
+  this.PosY = PosY;
+  this.Avoid = isAvoid;
+}
+
+// TeleportTiles Blueprint (Teleport Player)
+function mapTeleport(PosX, PosY, isTeleport, telMap, telX, telY) {
+  this.PosX = PosX;
+  this.PosY = PosY;
+  this.Teleport = isTeleport;
+  this.TelMap = telMap;
+  this.TelX = telX;
+  this.TelY = telY;
 }
 
 // Generate Empty Ground Layer
@@ -416,6 +436,32 @@ function setNpcSpawn() {
   return NpcSpawns;
 }
 
+// Generate Empty NpcAvoid Layer
+function setNpcAvoid() {
+  var NpcAvoids = [];
+  var x, y;
+  for (x = 0; x < max_map_X; x++) {
+    for (y = 0; y < max_map_Y; y++) {
+      var NpcAvoid = new mapNpcAvoid(0, 0, false); // Fill NpcAvoids with void
+      NpcAvoids.push(NpcAvoid);
+    }
+  }
+  return NpcAvoids;
+}
+
+// Generate Empty Teleport Layer
+function setTeleport() {
+  var Teleports = [];
+  var x, y;
+  for (x = 0; x < max_map_X; x++) {
+    for (y = 0; y < max_map_Y; y++) {
+      var Teleport = new mapTeleport(0, 0, false, 0, 0, 0); // Fill NpcAvoids with void
+      Teleports.push(Teleport);
+    }
+  }
+  return Teleports;
+}
+
 // Push Unique Npc to Map.Npcs
 function mapNpc(npcID, x, y, direction, isMoving, animFrame, stepCounter) {
   this.Name = Npcs[npcID].name;
@@ -445,6 +491,8 @@ function Map(Name, Moral, BootMap, BootX, BootY) {
   this.Fringe2 = setFringe2();
   this.Collisions = setCollision();
   this.NpcSpawn = setNpcSpawn();
+  this.NpcAvoid = setNpcAvoid();
+  this.Teleport = setTeleport();
 }
 
 /////////////////////////

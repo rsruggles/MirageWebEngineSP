@@ -1,3 +1,6 @@
+# Exclude Test Files
+tests.js
+
 # Exclude World Files
 world/*
 

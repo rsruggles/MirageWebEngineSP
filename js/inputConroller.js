@@ -163,9 +163,22 @@ function gameScreenClick(event) {
           mapNpcX = Math.round(mapNpcX + (scaled_size/2));          
       let mapNpcY = Math.round(pointer.y / scaled_size) * scaled_size;
           mapNpcY = Math.round(mapNpcY + (scaled_size/2));
-      activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, true, 0, scaled_size));
+      let stepCount = scaled_size + Math.floor(scaled_size / 2);
+      activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, true, 0, stepCount));
       console.log(activeMap.Npcs);
       break;
+    case "NpcAvoid":
+      activeMap.NpcAvoid[pointer_index].PosX = brush_Coord_X;
+      activeMap.NpcAvoid[pointer_index].PosY = brush_Coord_Y;
+      activeMap.NpcAvoid[pointer_index].Avoid = true;
+      break;
+    case "Teleport":
+      activeMap.Teleport[pointer_index].PosX = brush_Coord_X;
+      activeMap.Teleport[pointer_index].PosY = brush_Coord_Y;
+      activeMap.Teleport[pointer_index].Teleport = true;
+      activeMap.Teleport[pointer_index].TelMap = mapTelId;
+      activeMap.Teleport[pointer_index].TelX = mapTelX;
+      activeMap.Teleport[pointer_index].TelY = mapTelY;
     }
   }
   

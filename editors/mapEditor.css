@@ -16,9 +16,13 @@
                   cursor: pointer; margin-top: 4px; opacity: 0.5;}
 /*.editorAttribute:hover {background-color: #ccc;}*/
 #btnCollision {opacity: 1;}
-#btnCollision:hover {background-color: #ccc;}
+#btnCollision:hover {background-color: #ccc !important;}
 #btnNpcSpawn {opacity: 1;}
-#btnNpcSpawn:hover {background-color: #ccc;}
+#btnNpcSpawn:hover {background-color: #ccc !important;}
+#btnNpcAvoid {opacity: 1;}
+#btnNpcAvoid:hover {background-color: #ccc !important;}
+#btnTeleport {opacity: 1;}
+#btnTeleport:hover {background-color: #ccc !important;}
 .optLabel {display: block; margin-bottom: 7px; cursor: pointer;}
 /*#tileSheet {position: relative; cursor: crosshair;}*/
 #tileSheet {background-image: url(../img/tilesets/1.png); cursor: crosshair; overflow-y: hidden !important;}

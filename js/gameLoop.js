@@ -10,7 +10,7 @@ function loop() {
   
   // Prevent fuzziness when scaling
   // sprites and tilesets (crispy!)
-  gameScreen.imageSmoothingEnabled = false;   
+  gameScreen.imageSmoothingEnabled = false;
       
   // Set boundaries. Only draw what that the 
   // gameScreen Camera (viewport) can see
@@ -85,6 +85,13 @@ function loop() {
   /////////////////////////
   //   DRAW WORLD NPCS   //
   /////////////////////////
+  
+  // Sort Npcs by Y axis
+  activeMap.Npcs.sort(function (a, b) {
+    return a.Y - b.Y;
+  });
+  
+  // Draw The Npcs
   if (Array.isArray(activeMap.Npcs) && activeMap.Npcs.length) {
     for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
       if (activeMap.Npcs[npcId] === undefined) { break; }
@@ -130,6 +137,12 @@ function loop() {
       if (valueX + valueY > 0) {
         gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
       }
+      // Draw Npc Avoiders
+      if (mapEditorState != "Closed") {
+        if (activeMap.NpcAvoid[y * max_map_Y + x].Avoid === true) {
+          gameScreen.drawImage(collider_tile, 160, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        }
+      }
       // Draw Collision Tiles
       if (worldColliders === true && mapEditorState != "Closed") {
         if (activeMap.Collisions[y * max_map_Y + x].up === "True") {
@@ -149,6 +162,12 @@ function loop() {
       if (mapEditorState != "Closed") {
         if (activeMap.NpcSpawn[y * max_map_Y + x].npcID != null) {
           gameScreen.drawImage(collider_tile, 128, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
+        }
+      }
+      // Draw Teleports
+      if (mapEditorState != "Closed") {
+        if (activeMap.Teleport[y * max_map_Y + x].Teleport === true) {
+          gameScreen.drawImage(collider_tile, 256, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
         }
       }
       // Draw Grid Lines

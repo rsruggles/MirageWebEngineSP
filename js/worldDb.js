@@ -11,4 +11,3 @@ function saveToJson(jsnObject, fileName) {
   anchor.dataset.downloadurl = ['application/json', anchor.download, anchor.href].join(':');
   anchor.click();
 }
-

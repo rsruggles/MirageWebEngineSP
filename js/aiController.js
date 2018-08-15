@@ -29,32 +29,47 @@ function aiController() {
           break;
       }
       
+      // Check Collisions
       if (activeMap.Npcs[npcId].isMoving === true) {
-        switch(activeMap.Npcs[npcId].Direction) {
-          case 1: // Up
-            if (!isBlockedByPlayer(npcId)) {
-              activeMap.Npcs[npcId].Y -= walkSpeed;
-            }
-            break;
-          case 4: // Down
-            if (!isBlockedByPlayer(npcId)) {
-              activeMap.Npcs[npcId].Y += walkSpeed;
-            }
-            break;
-          case 7: // Left
-            if (!isBlockedByPlayer(npcId)) {
-              activeMap.Npcs[npcId].X -= walkSpeed;
-            }
-            break;
-          case 10: // Right
-            if (!isBlockedByPlayer(npcId)) {
-              activeMap.Npcs[npcId].X += walkSpeed;
-            }
-            break;
+        if (!isNpcBlockedByPlayer(npcId)) {
+          switch(activeMap.Npcs[npcId].Direction) {
+            case 1: // Up activeMap.Npcs[npcId].Y -= walkSpeed;
+              if (!isNpcBlockedByNpc(npcId)) {
+                activeMap.Npcs[npcId].Y -= walkSpeed;
+              } else {
+                activeMap.Npcs[npcId].Y += walkSpeed;
+                npcChangeDirection(npcId);
+              }              
+              break;
+            case 4: // Down activeMap.Npcs[npcId].Y += walkSpeed;
+              if (!isNpcBlockedByNpc(npcId)) {
+                activeMap.Npcs[npcId].Y += walkSpeed;
+              } else {
+                activeMap.Npcs[npcId].Y -= walkSpeed;
+                npcChangeDirection(npcId);
+              }   
+              break;
+            case 7: // Left activeMap.Npcs[npcId].X -= walkSpeed;
+              if (!isNpcBlockedByNpc(npcId)) {
+                activeMap.Npcs[npcId].X -= walkSpeed;
+              } else {
+                activeMap.Npcs[npcId].X += walkSpeed;
+                npcChangeDirection(npcId);
+              }   
+              break;
+            case 10: // Right activeMap.Npcs[npcId].X += walkSpeed;
+              if (!isNpcBlockedByNpc(npcId)) {
+                activeMap.Npcs[npcId].X += walkSpeed;
+              } else {
+                activeMap.Npcs[npcId].X -= walkSpeed;
+                npcChangeDirection(npcId);
+              }   
+              break;
+          }
         }
-      }      
-        
-    }  
+      }
+      
+    }
   }
 }
 
@@ -108,10 +123,13 @@ function npcTypeAoS(npcId) {
   // X/Y axis difference are similar
   let axisDiff = Math.abs(xDiff - yDiff);
   let rndDiff = (Math.floor(Math.random() * (scaled_size / 2)) + 1) + (scaled_size / 2);
+  // Set Step Count Variable
+  let npcStep = activeMap.Npcs[npcId].stepCounter;
 
-  // Only change direction when the axis difference.
-  // is greater than the random difference.
-  if (axisDiff >= rndDiff) {
+  // Only change direction when the axis difference
+  // is greater than the random difference && make
+  // sure we're not in the middle of a step count
+  if (axisDiff >= rndDiff && npcStep === 0) {
     // Chase Player on X Axis
     if (xDiff > yDiff) {
       if (Math.sign(activeMap.Npcs[npcId].X - player.x) === -1) {
@@ -129,16 +147,137 @@ function npcTypeAoS(npcId) {
     }    
   }
   
+  // Update Direction Change
+  if (npcStep === scaled_size) {
+    npcChangeDirection(npcId);
+  }
+  
+  // Reset the Step Counter
+  if (npcStep >= 0) {
+    activeMap.Npcs[npcId].stepCounter = npcStep - 1;
+  } else {
+    activeMap.Npcs[npcId].stepCounter = 0;
+  }
+  
+  
+  
   // Check if we need to start moving again
   if (xDiff > scaled_size || yDiff > scaled_size) {
     activeMap.Npcs[npcId].isMoving = true;
   }
 }
 
+//////////////////////////////
+//   Npc Change Direction   //
+//////////////////////////////
+function npcChangeDirection(npcId) {
+  let npcDirection = activeMap.Npcs[npcId].Direction;
+  let rndDirection = Math.floor(Math.random() * 2);
+  let npcStep = activeMap.Npcs[npcId].stepCounter;
+  
+  // Walk Opposite Direction
+  if (npcStep === scaled_size + Math.floor(scaled_size / 2)) {
+    switch(npcDirection) {
+      case 4: // Down
+        activeMap.Npcs[npcId].Direction = 1; // Up
+        break;
+      case 1: // Up
+        activeMap.Npcs[npcId].Direction = 4; // Down
+        break;
+      case 10: // Right
+        activeMap.Npcs[npcId].Direction = 7; // Left
+        break;
+      case 7: // Left
+        activeMap.Npcs[npcId].Direction = 10; // Right
+        break;
+    }
+  }
+  
+  // Walk Random Direction
+  if (npcStep === scaled_size) {
+    if (npcDirection === 10 || npcDirection === 7) {
+      if (rndDirection === 0) {
+        activeMap.Npcs[npcId].Direction = 4; // Down
+      } else {
+        activeMap.Npcs[npcId].Direction = 1; // Up
+      }
+    } else {
+      if (rndDirection === 0) {
+        activeMap.Npcs[npcId].Direction = 10; // Right
+      } else {
+        activeMap.Npcs[npcId].Direction = 7; // Left
+      }
+    }
+  }
+  
+}
+
+///////////////////////////////
+//   Is Npc Blocked By Npc   //
+///////////////////////////////
+function isNpcBlockedByNpc(activeNpc) {
+  var isBlocked = false;
+  let activeNpcX = activeMap.Npcs[activeNpc].X;
+  let activeNpcY = activeMap.Npcs[activeNpc].Y;
+  
+  for (let npcId = 0; npcId <= activeMap.Npcs.length; npcId++) {
+    
+    if (activeMap.Npcs[npcId] === undefined) { break; }
+    if (activeNpc === npcId) { continue; }
+        
+    let npcX = activeMap.Npcs[npcId].X;
+    let npcY = activeMap.Npcs[npcId].Y;
+    
+    switch(activeMap.Npcs[activeNpc].Direction) {
+      case 10: // While moving RIGHT
+        if ((activeNpcX + scaled_size) >= npcX) {
+          if (activeNpcY < npcY + (scaled_size) && activeNpcY > npcY - (scaled_size)) {
+            if (Math.abs(activeNpcX - npcX) <= scaled_size) {
+              isBlocked = true;
+              activeMap.Npcs[activeNpc].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+            }
+          }
+        }
+        break;
+      case 7: // While moving LEFT
+        if ((activeNpcX - scaled_size) <= npcX) {
+          if (activeNpcY < npcY + (scaled_size) && activeNpcY > npcY - (scaled_size)) {
+            if (Math.abs(activeNpcX - npcX) <= scaled_size) {
+              isBlocked = true;
+              activeMap.Npcs[activeNpc].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+            }
+          }
+        }
+        break;
+      case 1: // While moving UP
+        if ((activeNpcY - (scaled_size)) <= npcY) {
+          if (activeNpcX < npcX + (scaled_size) && activeNpcX > npcX - (scaled_size)) {
+            if (Math.abs(activeNpcY - npcY) <= scaled_size) {
+              isBlocked = true;
+              activeMap.Npcs[activeNpc].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+            }
+          }
+        }
+        break;
+      case 4: // While moving DOWN
+        if ((activeNpcY + (scaled_size)) >= npcY) {
+          if (activeNpcX < npcX + (scaled_size) && activeNpcX > npcX - (scaled_size)) {
+            if (Math.abs(activeNpcY - npcY) <= scaled_size) {
+              isBlocked = true;
+              activeMap.Npcs[activeNpc].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+            }
+          }
+        }
+        break;
+    }    
+  }
+  return isBlocked;
+}
+
 //////////////////////////////////
 //   Is Npc Blocked By Player   //
 //////////////////////////////////
-function isBlockedByPlayer(npcId) {  
+function isNpcBlockedByPlayer(npcId) {  
   let npcX = activeMap.Npcs[npcId].X;
   let npcY = activeMap.Npcs[npcId].Y;
   var isBlocked = false;
