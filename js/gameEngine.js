@@ -281,8 +281,8 @@ var maxWorldMaps = 25;
 var activeMap = 0;
 var tile_size = 32;
 var scaled_size = 96;      
-var max_map_X = 50; // Game doesn't behave if these values aren't equal. Why?
-var max_map_Y = 50; // Game doesn't behave if these values aren't equal. Why?
+var max_map_X = 75; // Game doesn't behave if these values aren't equal. Why?
+var max_map_Y = 75; // Something to do with pointer Y axis
       
 // mapTile Blueprint (ground, mask, mask2, fringe, fringe 2)   
 function mapTile(posX, posY) {
@@ -528,9 +528,13 @@ var gameScreen = document.querySelector("#gameScreen").getContext("2d");
 var height = document.documentElement.clientHeight;
 var width = document.documentElement.clientWidth;
 
+// Set Starting position to center of map
+let startX = Math.floor((max_map_X * scaled_size) / 2);
+let startY = Math.floor((max_map_Y * scaled_size) / 2);
+
 // Init gameScreen playerModel
 //                      X   Y   map isMov  dir  spd animDir animstep
-var player = new Player(960,960,0,false,"down",walkSpeed,4,0);     
+var player = new Player(startX,startY,0,false,"down",walkSpeed,4,0);     
 
 // Init the active Map
 setActiveMap(player.worldMap);

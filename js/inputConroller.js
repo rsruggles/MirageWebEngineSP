@@ -163,7 +163,7 @@ function gameScreenClick(event) {
           mapNpcX = Math.round(mapNpcX + (scaled_size/2));          
       let mapNpcY = Math.round(pointer.y / scaled_size) * scaled_size;
           mapNpcY = Math.round(mapNpcY + (scaled_size/2));
-      let stepCount = scaled_size + Math.floor(scaled_size / 2);
+      let stepCount = 0; //scaled_size + Math.floor(scaled_size / 2);
       activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, true, 0, stepCount));
       console.log(activeMap.Npcs);
       break;

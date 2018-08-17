@@ -34,7 +34,7 @@ function aiController() {
         if (!isNpcBlockedByPlayer(npcId)) {
           switch(activeMap.Npcs[npcId].Direction) {
             case 1: // Up activeMap.Npcs[npcId].Y -= walkSpeed;
-              if (!isNpcBlockedByNpc(npcId)) {
+              if (!isNpcBlockedByNpc(npcId) && !isNpcBlockedByTerrain(npcId)) {
                 activeMap.Npcs[npcId].Y -= walkSpeed;
               } else {
                 activeMap.Npcs[npcId].Y += walkSpeed;
@@ -42,7 +42,7 @@ function aiController() {
               }              
               break;
             case 4: // Down activeMap.Npcs[npcId].Y += walkSpeed;
-              if (!isNpcBlockedByNpc(npcId)) {
+              if (!isNpcBlockedByNpc(npcId) && !isNpcBlockedByTerrain(npcId)) {
                 activeMap.Npcs[npcId].Y += walkSpeed;
               } else {
                 activeMap.Npcs[npcId].Y -= walkSpeed;
@@ -50,7 +50,7 @@ function aiController() {
               }   
               break;
             case 7: // Left activeMap.Npcs[npcId].X -= walkSpeed;
-              if (!isNpcBlockedByNpc(npcId)) {
+              if (!isNpcBlockedByNpc(npcId) && !isNpcBlockedByTerrain(npcId)) {
                 activeMap.Npcs[npcId].X -= walkSpeed;
               } else {
                 activeMap.Npcs[npcId].X += walkSpeed;
@@ -58,7 +58,7 @@ function aiController() {
               }   
               break;
             case 10: // Right activeMap.Npcs[npcId].X += walkSpeed;
-              if (!isNpcBlockedByNpc(npcId)) {
+              if (!isNpcBlockedByNpc(npcId) && !isNpcBlockedByTerrain(npcId)) {
                 activeMap.Npcs[npcId].X += walkSpeed;
               } else {
                 activeMap.Npcs[npcId].X -= walkSpeed;
@@ -210,6 +210,56 @@ function npcChangeDirection(npcId) {
     }
   }
   
+}
+
+///////////////////////////////////
+//   Is Npc Blocked By Terrain   //
+///////////////////////////////////
+function isNpcBlockedByTerrain(npcId) {
+  var isBlocked = false;
+  let NpcX = activeMap.Npcs[npcId].X;
+  let NpcY = activeMap.Npcs[npcId].Y;  
+  var mapDimension = max_map_X + 1;  
+  
+  switch(activeMap.Npcs[npcId].Direction) {
+      case 10: // While moving RIGHT
+        let npcTopRight = getPlayerTileCoord(NpcX + (scaled_size * 0.5), NpcY - (scaled_size * 0.5));
+        let npcBotRight = getPlayerTileCoord(NpcX + (scaled_size * 0.5), NpcY + (scaled_size * 0.5));
+        if (activeMap.NpcAvoid[npcTopRight].Avoid === true ||
+            activeMap.NpcAvoid[npcBotRight].Avoid === true) {
+          isBlocked = true;
+          activeMap.Npcs[npcId].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+        }
+        break;
+      case 7: // While moving LEFT
+        let npcTopLeft = getPlayerTileCoord(NpcX - (scaled_size * 0.5), NpcY - (scaled_size * 0.5));
+        let npcBotLeft = getPlayerTileCoord(NpcX - (scaled_size * 0.5), NpcY + (scaled_size * 0.5));
+        if (activeMap.NpcAvoid[npcTopLeft].Avoid === true ||
+            activeMap.NpcAvoid[npcBotLeft].Avoid === true) {
+          isBlocked = true;
+          activeMap.Npcs[npcId].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+        }
+        break;
+      case 1: // While moving UP
+        let npcUpLeft = getPlayerTileCoord(NpcX - (scaled_size * 0.5), NpcY - (scaled_size * 0.5));
+        let npcUpRight = getPlayerTileCoord(NpcX + (scaled_size * 0.5), NpcY - (scaled_size * 0.5));
+        if (activeMap.NpcAvoid[npcUpLeft].Avoid === true ||
+            activeMap.NpcAvoid[npcUpRight].Avoid === true) {
+          isBlocked = true;
+          activeMap.Npcs[npcId].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+        }
+        break;
+      case 4: // While moving DOWN
+        let npcDownLeft = getPlayerTileCoord(NpcX - (scaled_size * 0.5), NpcY + (scaled_size * 0.5));
+        let npcDownRight = getPlayerTileCoord(NpcX + (scaled_size * 0.5), NpcY + (scaled_size * 0.5));
+        if (activeMap.NpcAvoid[npcDownLeft].Avoid === true ||
+            activeMap.NpcAvoid[npcDownRight].Avoid === true) {
+          isBlocked = true;
+          activeMap.Npcs[npcId].stepCounter = scaled_size + Math.floor(scaled_size / 2);
+        }
+        break;
+    }   
+  return isBlocked;
 }
 
 ///////////////////////////////

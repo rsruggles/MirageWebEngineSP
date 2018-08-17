@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Language: JavaScript, HTML
 * Dependencies: jQuery, jQueryUI
-* Version: ac-0.1.7
+* Version: ac-0.1.9
 
 ### Mostly Complete Features:
 
@@ -77,6 +77,15 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 * Implemented two new console commands for saving your maps and npcs!
 * **/savemaps** Generates a downloadable file, WorldMaps.json, that you can place in your project's "world" folder.
 * **/savenpcs** Generates a downloadable file, WorldNpcs.json, that you can place in your project's "world" folder.
+
+### What's new in version ac-0.1.9
+
+* **ac-0.1.8** Npcs now collide against other Npcs.
+* **ac-0.1.8** Layed groundwork for NpcAvoid tile types.
+* **ac-0.1.8** Layed groundwork for Teleport tile types.
+* **ac-0.1.8** Minor updates to mapEditor attributes UI.
+* **ac-0.1.9** Changed max_map_X & max_map_Y to 75.
+* **ac-0.1.9** Npcs now collide against NpcAvoid tile types.
 
 
 ### Authors
