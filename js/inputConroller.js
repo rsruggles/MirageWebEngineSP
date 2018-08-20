@@ -121,64 +121,125 @@ function gameScreenClick(event) {
   if (mapEditorState == "Max") {
     switch(mapEditorLayer) {
     case "Ground":
-      activeMap.Ground[pointer_index].PosX = brush_Coord_X;
-      activeMap.Ground[pointer_index].PosY = brush_Coord_Y;
+      if (eraserBrush === false) {
+        activeMap.Ground[pointer_index].PosX = brush_Coord_X;
+        activeMap.Ground[pointer_index].PosY = brush_Coord_Y;
+      } else {
+        activeMap.Ground[pointer_index].PosX = 0;
+        activeMap.Ground[pointer_index].PosY = 0;
+      }
       break;
     case "Animation":
-      activeMap.Animation[pointer_index].PosX_1 = mapAnimation[0];
-      activeMap.Animation[pointer_index].PosY_1 = mapAnimation[1];
-      activeMap.Animation[pointer_index].PosX_2 = mapAnimation[2];
-      activeMap.Animation[pointer_index].PosY_2 = mapAnimation[3];
+      if (eraserBrush === false) {
+        activeMap.Animation[pointer_index].PosX_1 = mapAnimation[0];
+        activeMap.Animation[pointer_index].PosY_1 = mapAnimation[1];
+        activeMap.Animation[pointer_index].PosX_2 = mapAnimation[2];
+        activeMap.Animation[pointer_index].PosY_2 = mapAnimation[3];
+      } else {
+        activeMap.Animation[pointer_index].PosX_1 = 0;
+        activeMap.Animation[pointer_index].PosY_1 = 0;
+        activeMap.Animation[pointer_index].PosX_2 = 0;
+        activeMap.Animation[pointer_index].PosY_2 = 0;
+      }
       break;
     case "Mask":
-      activeMap.Mask[pointer_index].PosX = brush_Coord_X;
-      activeMap.Mask[pointer_index].PosY = brush_Coord_Y;
-      console.log("X: " + brush_Coord_X + " Y: " + brush_Coord_Y);
+      if (eraserBrush === false) {
+        activeMap.Mask[pointer_index].PosX = brush_Coord_X;
+        activeMap.Mask[pointer_index].PosY = brush_Coord_Y;
+      } else {
+        activeMap.Mask[pointer_index].PosX = 0;
+        activeMap.Mask[pointer_index].PosY = 0;
+      }
       break;
     case "Mask2":
-      activeMap.Mask2[pointer_index].PosX = brush_Coord_X;
-      activeMap.Mask2[pointer_index].PosY = brush_Coord_Y;
+      if (eraserBrush === false) {
+        activeMap.Mask2[pointer_index].PosX = brush_Coord_X;
+        activeMap.Mask2[pointer_index].PosY = brush_Coord_Y;
+      } else {
+        activeMap.Mask2[pointer_index].PosX = 0;
+        activeMap.Mask2[pointer_index].PosY = 0;
+      }
       break;
     case "Fringe":
-      activeMap.Fringe[pointer_index].PosX = brush_Coord_X;
-      activeMap.Fringe[pointer_index].PosY = brush_Coord_Y;
+      if (eraserBrush === false) {
+        activeMap.Fringe[pointer_index].PosX = brush_Coord_X;
+        activeMap.Fringe[pointer_index].PosY = brush_Coord_Y;
+      } else {
+        activeMap.Fringe[pointer_index].PosX = 0;
+        activeMap.Fringe[pointer_index].PosY = 0;
+      }
       break;
     case "Fringe2":
-      activeMap.Fringe2[pointer_index].PosX = brush_Coord_X;
-      activeMap.Fringe2[pointer_index].PosY = brush_Coord_Y;
+      if (eraserBrush === false) {
+        activeMap.Fringe2[pointer_index].PosX = brush_Coord_X;
+        activeMap.Fringe2[pointer_index].PosY = brush_Coord_Y;
+      } else {
+        activeMap.Fringe2[pointer_index].PosX = 0;
+        activeMap.Fringe2[pointer_index].PosY = 0;
+      }
       break;
     case "Collision":
-      activeMap.Collisions[pointer_index].PosX = brush_Coord_X;
-      activeMap.Collisions[pointer_index].PosY = brush_Coord_Y;
-      activeMap.Collisions[pointer_index].up = mapCollider[0];
-      activeMap.Collisions[pointer_index].down = mapCollider[1];
-      activeMap.Collisions[pointer_index].left = mapCollider[2];
-      activeMap.Collisions[pointer_index].right = mapCollider[3];
+      if (eraserBrush === false) {
+        activeMap.Collisions[pointer_index].PosX = brush_Coord_X;
+        activeMap.Collisions[pointer_index].PosY = brush_Coord_Y;
+        activeMap.Collisions[pointer_index].up = mapCollider[0];
+        activeMap.Collisions[pointer_index].down = mapCollider[1];
+        activeMap.Collisions[pointer_index].left = mapCollider[2];
+        activeMap.Collisions[pointer_index].right = mapCollider[3];
+      } else {
+        activeMap.Collisions[pointer_index].PosX = 0;
+        activeMap.Collisions[pointer_index].PosY = 0;
+        activeMap.Collisions[pointer_index].up = false;
+        activeMap.Collisions[pointer_index].down = false;
+        activeMap.Collisions[pointer_index].left = false;
+        activeMap.Collisions[pointer_index].right = false;
+      }
       break;
     case "NpcSpawn":
-      activeMap.NpcSpawn[pointer_index].PosX = brush_Coord_X;
-      activeMap.NpcSpawn[pointer_index].PosY = brush_Coord_Y;
-      activeMap.NpcSpawn[pointer_index].npcID = mapNpcID;
-      let mapNpcX = Math.round(pointer.x / scaled_size) * scaled_size;
-          mapNpcX = Math.round(mapNpcX + (scaled_size/2));          
-      let mapNpcY = Math.round(pointer.y / scaled_size) * scaled_size;
-          mapNpcY = Math.round(mapNpcY + (scaled_size/2));
-      let stepCount = 0; //scaled_size + Math.floor(scaled_size / 2);
-      activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, true, 0, stepCount));
-      console.log(activeMap.Npcs);
+      if (eraserBrush === false) {
+        activeMap.NpcSpawn[pointer_index].PosX = brush_Coord_X;
+        activeMap.NpcSpawn[pointer_index].PosY = brush_Coord_Y;
+        activeMap.NpcSpawn[pointer_index].npcID = mapNpcID;
+        let mapNpcX = Math.round(pointer.x / scaled_size) * scaled_size;
+            mapNpcX = Math.round(mapNpcX + (scaled_size/2));          
+        let mapNpcY = Math.round(pointer.y / scaled_size) * scaled_size;
+            mapNpcY = Math.round(mapNpcY + (scaled_size/2));
+        let stepCount = 0; //scaled_size + Math.floor(scaled_size / 2);
+        activeMap.Npcs.push(new mapNpc(mapNpcID, mapNpcX, mapNpcY, 4, true, 0, stepCount));
+      } else {
+        activeMap.NpcSpawn[pointer_index].PosX = 0;
+        activeMap.NpcSpawn[pointer_index].PosY = 0;
+        activeMap.NpcSpawn[pointer_index].npcID = null;
+      }      
       break;
     case "NpcAvoid":
-      activeMap.NpcAvoid[pointer_index].PosX = brush_Coord_X;
-      activeMap.NpcAvoid[pointer_index].PosY = brush_Coord_Y;
-      activeMap.NpcAvoid[pointer_index].Avoid = true;
+      if (eraserBrush === false) {
+        activeMap.NpcAvoid[pointer_index].PosX = brush_Coord_X;
+        activeMap.NpcAvoid[pointer_index].PosY = brush_Coord_Y;
+        activeMap.NpcAvoid[pointer_index].Avoid = true;
+      } else {
+        activeMap.NpcAvoid[pointer_index].PosX = 0;
+        activeMap.NpcAvoid[pointer_index].PosY = 0;
+        activeMap.NpcAvoid[pointer_index].Avoid = false;
+      }      
       break;
     case "Teleport":
-      activeMap.Teleport[pointer_index].PosX = brush_Coord_X;
-      activeMap.Teleport[pointer_index].PosY = brush_Coord_Y;
-      activeMap.Teleport[pointer_index].Teleport = true;
-      activeMap.Teleport[pointer_index].TelMap = mapTelId;
-      activeMap.Teleport[pointer_index].TelX = mapTelX;
-      activeMap.Teleport[pointer_index].TelY = mapTelY;
+      if (eraserBrush === false) {
+        activeMap.Teleport[pointer_index].PosX = brush_Coord_X;
+        activeMap.Teleport[pointer_index].PosY = brush_Coord_Y;
+        activeMap.Teleport[pointer_index].Teleport = true;
+        activeMap.Teleport[pointer_index].TelMap = mapTelId;
+        activeMap.Teleport[pointer_index].TelX = mapTelX;
+        activeMap.Teleport[pointer_index].TelY = mapTelY;
+      } else {
+        activeMap.Teleport[pointer_index].PosX = 0;
+        activeMap.Teleport[pointer_index].PosY = 0;
+        activeMap.Teleport[pointer_index].Teleport = false;
+        activeMap.Teleport[pointer_index].TelMap = 0;
+        activeMap.Teleport[pointer_index].TelX = 0;
+        activeMap.Teleport[pointer_index].TelY = 0;
+      }
+      
     }
   }
   

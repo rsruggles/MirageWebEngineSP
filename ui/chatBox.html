@@ -2,12 +2,12 @@
   <div id="chatContainer">
     <div id="chatText">
       <strong>Mirage Web Engine</strong><br />
-      <strong>Version: ac-0.1.9</strong><br />
+      <strong>Version: ac-0.2.0</strong><br />
       <strong>Author: </strong>Rian Ruggles<br /><br />
       
       <strong>Notes:</strong>
-      <br />1. When the animation layer is selected load the brush with <i>two</i> map editor tiles. When placed in the world, these two tiles will cycle.
-      <br />2. Click "Reset Animation Brush" to reset the brush. Currently, nothing indicates that the brush has been reset, but it works in the mean time.
+      <br />1. For animation tiles, load the brush with <i>two</i> map editor tiles. When placed in the world, these two tiles will alternate.
+      <br />2. Cycle (double click) the "Eraser Brush" to clear the animation brush for new animations.
       
       <br /><br />
       <strong>Commands:</strong>
@@ -17,6 +17,7 @@
       <br />/warptomap # (0 - 25)
       <br />/savemaps
       <br />/savenpcs
+      <br />/location
       <br /><br />
     </div>
     <input id="chatInput" type="text">
@@ -73,6 +74,10 @@
       } else if (chatMsg == "/savenpcs") {
         saveToJson(JSON.stringify(Npcs),"WorldNpcs.json")
         chatText.innerHTML += "<strong>Console: </strong>" + chatMsg + "<br />";
+        $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
+        chatInput.value = "";
+      } else if (chatMsg == "/location") {
+        chatText.innerHTML += "<strong>Console: </strong> /location <br />Player.Map: " + player.worldMap + "<br /> Player.X: " + player.x + "<br /> Player.Y: " + player.y + "<br />";
         $("#chatText").scrollTop($("#chatText").prop("scrollHeight"));
         chatInput.value = "";
       } else {

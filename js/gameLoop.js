@@ -138,7 +138,7 @@ function loop() {
         gameScreen.drawImage(tile_sheet, valueX * tile_size, valueY * tile_size, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
       }
       // Draw Npc Avoiders
-      if (mapEditorState != "Closed") {
+      if (worldNpcAvoids === true && mapEditorState != "Closed") {
         if (activeMap.NpcAvoid[y * max_map_Y + x].Avoid === true) {
           gameScreen.drawImage(collider_tile, 160, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
         }
@@ -159,13 +159,13 @@ function loop() {
         }
       }
       // Draw Npc Spawners
-      if (mapEditorState != "Closed") {
+      if (worldNpcSpawns === true && mapEditorState != "Closed") {
         if (activeMap.NpcSpawn[y * max_map_Y + x].npcID != null) {
           gameScreen.drawImage(collider_tile, 128, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
         }
       }
       // Draw Teleports
-      if (mapEditorState != "Closed") {
+      if (worldTeleports === true && mapEditorState != "Closed") {
         if (activeMap.Teleport[y * max_map_Y + x].Teleport === true) {
           gameScreen.drawImage(collider_tile, 256, 0, tile_size, tile_size, tile_x, tile_y, scaled_size, scaled_size);
         }
@@ -193,14 +193,38 @@ function loop() {
     }
   }
   
+  /////////////////////////////////////////////
+  //   Check if we need to Teleport Player   //
+  /////////////////////////////////////////////
+  let PlayerTileLoc = getPlayerTileCoord(player.x, player.y);
+  if (activeMap.Teleport[PlayerTileLoc].Teleport === true) {
+    let TelMap = activeMap.Teleport[PlayerTileLoc].TelMap;
+    let TelX = activeMap.Teleport[PlayerTileLoc].TelX;
+    let TelY = activeMap.Teleport[PlayerTileLoc].TelY;
+    
+    player.x = TelX;
+    player.y = TelY;
+    player.worldMap = TelMap;
+    setActiveMap(TelMap);
+    
+  }
+  
   ////////////////////////////////////////////
   //   Update gameScreens Camera Position   //
   ////////////////////////////////////////////
   if (player.y >= viewport.h * 0.5 && player.y <= (scaled_size * max_map_Y) - viewport.h * 0.5) {
     viewport.scrollToY(player.y);
-  }        
+  } else if (player.y <= viewport.h * 0.5) {
+    viewport.y = 0;
+  } else if (player.y >= (scaled_size * max_map_Y) - viewport.h * 0.5) {
+    viewport.y = (scaled_size * max_map_Y) - viewport.h;
+  }
   if (player.x >= viewport.w * 0.5 && player.x <= (scaled_size * max_map_X) - viewport.w * 0.5) {
     viewport.scrollToX(player.x);
+  } else if (player.x <= viewport.w * 0.5) {
+    viewport.x = 0;
+  } else if (player.x >= (scaled_size * max_map_X) - viewport.w * 0.5) {
+    viewport.x = (scaled_size * max_map_X) - viewport.w;
   }
   
   //////////////////////////////////

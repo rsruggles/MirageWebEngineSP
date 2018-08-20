@@ -12,7 +12,7 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 
 * Language: JavaScript, HTML
 * Dependencies: jQuery, jQueryUI
-* Version: ac-0.1.9
+* Version: ac-0.2.0
 
 ### Mostly Complete Features:
 
@@ -86,6 +86,16 @@ A browser-based single player 2D top-down RPG Engine. The main goal of Mirage We
 * **ac-0.1.8** Minor updates to mapEditor attributes UI.
 * **ac-0.1.9** Changed max_map_X & max_map_Y to 75.
 * **ac-0.1.9** Npcs now collide against NpcAvoid tile types.
+
+### What's new in version ac-0.2.0
+* Finished Teleport type tile attributes.
+* Added **/location** command for use with Teleport tiles.
+* Modified viewPort logic to handle edge-of-map teleports.
+* Added brush preview to the map editor.
+* Added eraser brush to the map editor.
+* Several map editor UI improvemnets.
+* Added additional toggles to the Tools tab.
+* Added sprite preview to the Npc editor.
 
 
 ### Authors

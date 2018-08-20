@@ -256,6 +256,9 @@ var npcEditMode = false;
 ////////////////////////////////
 var worldGrid = true;
 var worldColliders = true;
+var worldNpcSpawns = true;
+var worldNpcAvoids = true;
+var worldTeleports = true;
 var mapEditorState = "Closed";
 var mapEditorWinLoc = [];
 var mapEditorLayer = "Ground";
@@ -266,6 +269,7 @@ var mapAnimFrame = false;
 var mapTelId = 0;
 var mapTelX = 0;
 var mapTelY = 0;
+var eraserBrush = false;
 var brush_Coord_X = 0;
 var brush_Coord_Y = 0;
 
@@ -281,8 +285,8 @@ var maxWorldMaps = 25;
 var activeMap = 0;
 var tile_size = 32;
 var scaled_size = 96;      
-var max_map_X = 75; // Game doesn't behave if these values aren't equal. Why?
-var max_map_Y = 75; // Something to do with pointer Y axis
+var max_map_X = 74; // Game doesn't behave if these values aren't equal. Why?
+var max_map_Y = 74; // Something to do with pointer Y axis
       
 // mapTile Blueprint (ground, mask, mask2, fringe, fringe 2)   
 function mapTile(posX, posY) {

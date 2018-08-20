@@ -21,31 +21,30 @@
 <!-- Tab content -->
 <div id="Layers" class="tabcontent">
   <br />
-  <form style="padding: 0 15px;">
-    <div class="p50" style="float: left">
-      <label class="optLabel"><input type="radio" id="optGround" name="optLayer" checked="checked"> Ground</label>
-      <label class="optLabel"><input type="radio" id="optAnim" name="optLayer">  Animation</label>
-      <label class="optLabel"><input type="radio" id="optMask" name="optLayer"> Mask</label>
+  <form style="margin-top: 7px;">
+    <div class="p50" style="float: left; padding-left: 15px;">
+      <span id="btnGround" class="editorAttribute mar7R" style="margin-top: 0px;">Ground</span>
+      <span id="btnAnimation" class="editorAttribute mar7R" style="margin-top: 0px;">Animation</span>
+      <span id="btnMask" class="editorAttribute mar7R" style="margin-top: 0px;">Mask</span>
     </div>
-    <div class="p50" style="float: left">
-      <label class="optLabel"><input type="radio" id="optMask2" name="optLayer"> Mask 2</label>
-      <label class="optLabel"><input type="radio" id="optFringe" name="optLayer"> Fringe</label>
-      <label class="optLabel"><input type="radio" id="optFringe2" name="optLayer"> Fringe 2</label>
+    <div class="p50" style="float: left; padding-left:  7px; padding-right: 8px;">
+      <span id="btnMask2" class="editorAttribute mar7R" style="margin-top: 0px;">Mask 2</span>
+      <span id="btnFringe" class="editorAttribute mar7R" style="margin-top: 0px;">Fringe</span>
+      <span id="btnFringe2" class="editorAttribute mar7R" style="margin-top: 0px;">Fringe 2</span>
     </div>
   </form>
-  <strong id="clearBrush" style="display: block; max-width: 100%; cursor: pointer; padding: 7px 15px;">Reset Animation Brush</strong>
 </div>
 <div id="Attributes" class="tabcontent">
   <br />
-  <div id="attContainer">
+  <div id="attContainer" style="margin-top: 7px;">
     <div style="width: 50%; float: left; padding-left: 15px;">
       <span id="btnCollision" class="editorAttribute mar7R" style="margin-top: 0px;">Collision</span>
       <span id="btnNpcSpawn" class="editorAttribute mar7R">Npc Spawn</span>
       <span id="btnNpcAvoid" class="editorAttribute mar7R" disabled>Npc Avoid</span>
     </div>
     <div style="width: 50%; float: left; padding-right: 15px;">
-      <span id="" class="editorAttribute mar7L" style="margin-top: 0px;">Door/Key</span>
-      <span id="" class="editorAttribute mar7L" disabled>Loot Chest</span>
+      <span id="btnDoorKey" class="editorAttribute mar7L" style="margin-top: 0px;">Door/Key</span>
+      <span id="btnLootChest" class="editorAttribute mar7L" disabled>Loot Chest</span>
       <span id="btnTeleport" class="editorAttribute mar7L" disabled>Teleport</span>
     </div>
   </div> 
@@ -127,12 +126,31 @@
 <div id="Tools" class="tabcontent">
   <br />
   <form style="padding: 0 15px;">
-    <label class="optLabel"><input type="checkbox" id="optWorldGrid" name="optWorldGrid" checked> World Grid</label>
-    <label class="optLabel"><input type="checkbox" id="optWorldColliders" name="optWorldColliders" checked> World Colliders</label>
+    <div class="p50" style="float: left;">
+      <label class="optLabel"><input type="checkbox" id="optWorldGrid" name="optWorldGrid" checked> World Grid</label>
+      <label class="optLabel"><input type="checkbox" id="optWorldColliders" name="optWorldColliders" checked> Colliders</label>
+      <label class="optLabel"><input type="checkbox" id="optNpcSpawn" name="optNpcSpawn" checked> Npc Spawn</label>
+      <label class="optLabel"><input type="checkbox" id="optNpcAvoid" name="optNpcAvoid" checked> Npc Avoid</label>
+    </div>
+    <div class="p50" style="float: left;">
+      <label class="optLabel"><input type="checkbox" id="optDoorKey" name="optDoorKey" checked> Door/Key</label>
+      <label class="optLabel"><input type="checkbox" id="optLootChest" name="optLootChest" checked> Loot Chest</label>
+      <label class="optLabel"><input type="checkbox" id="optTeleport" name="optTeleport" checked> Teleport</label>
+    </div>
   </form>
 </div>
-      
-<!-- Save / Cancel Changes -->
+
+<div style="max-width: 275px; margin-top: 7px; margin-bottom: 7px;">
+  <div class="p50" style="text-align: center; float: left;">
+    <strong>Brush Preview</strong>
+    <canvas id="editorPreview" width="32px" height="32px" style="margin-top: 7px;"></canvas>
+  </div>
+  <div class="p50" style="float: left; padding-left: 7px;">
+    <span id="clearBrush" class="editorAttribute">Eraser Brush</span>
+  </div>
+</div>
+
+<!-- Save / Cancel Changes
 <form>
   <div class="p50 fLeft pad">
     <button class="EditorButton" disabled="true">Save</button>
@@ -140,13 +158,13 @@
   <div class="p50 fLeft pad">
     <button class="EditorButton" disabled="true">Cancel</button>
   </div>
-</form>
+</form> -->
 
 <script>
   var editorTop = 20;
   var editorLeft =20
   var editorWidth= $("#mapEditor").outerWidth();
-  var editorHeight= 581;
+  var editorHeight= 604;
   $(document).ready(function() {
     $('#tileSheet').click(function(e) {
       var offset = $(this).offset();
@@ -204,6 +222,9 @@
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+    $('#attCollision').hide();
+    $('#attMapNpc').hide();
+    $('#attTeleport').hide();
   }      
   document.getElementById("Layers").style.display = "block";
   
@@ -248,36 +269,66 @@
     }
   });
       
-  $("#optGround").click(function() {
+  $("#btnGround").click(function() {
     mapEditorLayer = "Ground";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnGround").css("background-color", "#aec8e8");
   });
 
-  $("#optAnim").click(function() {
-    mapEditorLayer = "Animation";
-  });
-  
-  $("#optMask").click(function() {
+  $("#btnMask").click(function() {
     mapEditorLayer = "Mask";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnMask").css("background-color", "#aec8e8");
   });
 
-  $("#optMask2").click(function() {
+  $("#btnMask2").click(function() {
     mapEditorLayer = "Mask2";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnMask2").css("background-color", "#aec8e8");
   });
   
-  $("#optAnimation").click(function() {
+  $("#btnAnimation").click(function() {
     mapEditorLayer = "Animation";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnAnimation").css("background-color", "#aec8e8");
   });
   
-  $("#optFringe").click(function() {
+  $("#btnFringe").click(function() {
     mapEditorLayer = "Fringe";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnFringe").css("background-color", "#aec8e8");
   });
   
-  $("#optFringe2").click(function() {
+  $("#btnFringe2").click(function() {
     mapEditorLayer = "Fringe2";
+    // Reset All btnBackgrounds
+    resetBtnBackgrounds();
+    // Change Background Color
+    $("#btnFringe2").css("background-color", "#aec8e8");
   });
   
   $("#clearBrush").click(function() {
-    mapAnimation =[0, 0, 0, 0]
+    eraserBrush = !eraserBrush;    
+    if (eraserBrush === true) {
+      mapAnimation = [0, 0, 0, 0];
+      brush_Coord_X = 0;
+      brush_Coord_Y = 0;
+      $('#mapEditorTile').css("top", brush_Coord_Y * tile_size);
+      $('#mapEditorTile').css("left", brush_Coord_X * tile_size);
+      $('#clearBrush').css("background-color", "#e8aeae");
+    } else {
+      $('#clearBrush').css("background-color", "#ddd");
+    }
   });
   
   $("#btnCollision").click(function() {
@@ -319,15 +370,23 @@
   });
   
   $("#optWorldGrid").click(function() {
-    if (worldGrid === false) {
-      worldGrid = true;
-    } else { worldGrid = false; }
+    worldGrid = !worldGrid;
   });
   
   $("#optWorldColliders").click(function() {
-    if (worldColliders === false) {
-      worldColliders = true;
-    } else { worldColliders = false; }
+    worldColliders = !worldColliders;
+  });
+  
+  $("#optNpcSpawn").click(function() {
+    worldNpcSpawns = !worldNpcSpawns;
+  });
+  
+  $("#optNpcAvoid").click(function() {
+    worldNpcAvoids = !worldNpcAvoids;
+  });
+  
+  $("#optTeleport").click(function() {
+    worldTeleports = !worldTeleports;
   });
       
   $("#colToggle").click(function() {
@@ -400,5 +459,11 @@
     $("#btnNpcSpawn").css("background-color", "#ddd");
     $("#btnNpcAvoid").css("background-color", "#ddd");
     $("#btnTeleport").css("background-color", "#ddd");
+    $("#btnGround").css("background-color", "#ddd");
+    $("#btnAnimation").css("background-color", "#ddd");
+    $("#btnMask").css("background-color", "#ddd");
+    $("#btnMask2").css("background-color", "#ddd");
+    $("#btnFringe").css("background-color", "#ddd");
+    $("#btnFringe2").css("background-color", "#ddd");
   }
 </script>

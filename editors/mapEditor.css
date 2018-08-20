@@ -15,20 +15,48 @@
 .editorAttribute {display: block; padding: 4px; border: 1px solid #666; background-color: #ddd; text-align: center;
                   cursor: pointer; margin-top: 4px; opacity: 0.5;}
 /*.editorAttribute:hover {background-color: #ccc;}*/
-#btnCollision {opacity: 1;}
+#btnCollision {opacity: 1; margin-bottom: 10px;}
 #btnCollision:hover {background-color: #ccc !important;}
-#btnNpcSpawn {opacity: 1;}
+#btnNpcSpawn {opacity: 1; margin-bottom: 10px;}
 #btnNpcSpawn:hover {background-color: #ccc !important;}
-#btnNpcAvoid {opacity: 1;}
+#btnNpcAvoid {opacity: 1; margin-bottom: 10px;}
 #btnNpcAvoid:hover {background-color: #ccc !important;}
-#btnTeleport {opacity: 1;}
+#btnDoorKey {margin-bottom: 10px;}
+/*#btnDoorKey:hover {background-color: #ccc !important;}*/
+#btnLootChest {margin-bottom: 10px;}
+/*#btnLootChest:hover {background-color: #ccc !important;}*/
+#btnTeleport {opacity: 1; margin-bottom: 10px;}
 #btnTeleport:hover {background-color: #ccc !important;}
+
+#btnGround {opacity: 1; margin-bottom: 10px;}
+#btnGround:hover {background-color: #ccc !important;}
+#btnAnimation {opacity: 1; margin-bottom: 10px;}
+#btnAnimation:hover {background-color: #ccc !important;}
+#btnMask {opacity: 1; margin-bottom: 10px;}
+#btnMask:hover {background-color: #ccc !important;}
+#btnMask2 {opacity: 1; margin-bottom: 10px;}
+#btnMask2:hover {background-color: #ccc !important;}
+#btnFringe {opacity: 1; margin-bottom: 10px;}
+#btnFringe:hover {background-color: #ccc !important;}
+#btnFringe2 {opacity: 1; margin-bottom: 10px;}
+#btnFringe2:hover {background-color: #ccc !important;}
+
 .optLabel {display: block; margin-bottom: 7px; cursor: pointer;}
 /*#tileSheet {position: relative; cursor: crosshair;}*/
 #tileSheet {background-image: url(../img/tilesets/1.png); cursor: crosshair; overflow-y: hidden !important;}
 #tileSheet {height: 768px;} /* Make this equal to the height of the actual tilesheet */
 #mapEditorTile {height: 32px; width: 32px; border: 3px dashed #ff00b6; position: relative;}
 #brushCoord {padding: 10px; margin-top: 30px !important;}
+
+#clearBrush {
+  cursor: pointer;
+  max-width: 114px;
+  opacity: 1;
+  margin-top: 28px;
+}
+#clearBrush:hover {background-color: #ccc !important;}
+
+
 
 /* ///////////////////////
    //  MAP EDITOR TABS  //
